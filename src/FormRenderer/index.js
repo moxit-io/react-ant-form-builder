@@ -1,7 +1,7 @@
 import React from 'react';
 import { Form, Input, Checkbox, Button, Radio, Select, Row, Col } from 'antd';
 
-export const selectFormElement = type => {
+const selectFormElement = type => {
   switch (type) {
     case 'input':
       return Input;
@@ -22,70 +22,52 @@ export const selectFormElement = type => {
 };
 
 export const FormItemRenderer = ({ formItem, decorator, initialValue }) => {
-  const {
-    label,
-    field,
-    type,
-    placeholder,
-    options,
-    disabled,
-    size,
-    mode,
-    text,
-    ...fieldProps
-  } = formItem;
-
+  const { label, field, type, ...fieldProps } = formItem;
+  // Select list
   if (type === 'select') {
     return (
-      <Form.Item label={label}>
+      <Form.Item label={label} help={fieldProps.help || ''}>
         {decorator(field, {
           ...fieldProps,
           initialValue,
         })(
-          <Select
-            placeholder={placeholder}
-            mode={mode}
-            disabled={disabled}
-            size={size}
-          >
-            {options.map(item => (
-              <Select.Option key={item.value} value={item.value}>
-                {item.label}
-              </Select.Option>
-            ))}
+          <Select {...fieldProps}>
+            {fieldProps.options &&
+              fieldProps.options.map(item => (
+                <Select.Option key={item.value} value={item.value}>
+                  {item.label}
+                </Select.Option>
+              ))}
           </Select>
         )}
       </Form.Item>
     );
   }
-
+  // Confirm checkbox
   if (type === 'confirm') {
     return (
-      <Form.Item label={label}>
+      <Form.Item label={label} help={fieldProps.help || ''}>
         {decorator(field, {
           ...fieldProps,
           initialValue,
-        })(<Checkbox>{text}</Checkbox>)}
+        })(<Checkbox>{fieldProps.text || ''}</Checkbox>)}
       </Form.Item>
     );
   }
-
+  // Others
   const FormElement = selectFormElement(type);
   if (!FormElement) return null;
 
   return (
-    <Form.Item label={label}>
+    <Form.Item
+      labelAlign={fieldProps.labelAlign || 'left'}
+      label={label}
+      help={fieldProps.help || ''}
+    >
       {decorator(field, {
         ...fieldProps,
         initialValue,
-      })(
-        <FormElement
-          placeholder={placeholder}
-          options={options}
-          disabled={disabled}
-          size={size}
-        />
-      )}
+      })(<FormElement {...fieldProps} />)}
     </Form.Item>
   );
 };
@@ -98,7 +80,6 @@ const FormRenderer = ({
 }) => {
   const handleSubmit = e => {
     e.preventDefault();
-    console.log('here');
     validateFields((err, formData) => {
       if (!err) {
         console.log(formData);
@@ -106,7 +87,7 @@ const FormRenderer = ({
     });
   };
 
-  getFieldDecorator('id', { initialValue: data.id });
+  getFieldDecorator('id', { initialValue: data.id || '' });
   getFieldDecorator('formId', { initialValue: id });
   getFieldDecorator('formType', { initialValue: type });
 
@@ -125,13 +106,14 @@ const FormRenderer = ({
         )}
         <Form onSubmit={handleSubmit} colon={colon}>
           {schema &&
-            schema.map(fieldItem => (
-              <FormItemRenderer
-                key={fieldItem.label}
-                formItem={fieldItem}
-                decorator={getFieldDecorator}
-                initialValue={data[fieldItem.field]}
-              />
+            schema.map((fieldItem, index) => (
+              <Row key={index}>
+                <FormItemRenderer
+                  formItem={fieldItem}
+                  decorator={getFieldDecorator}
+                  initialValue={data[fieldItem.field]}
+                />
+              </Row>
             ))}
           <div>
             <Button htmlType="submit">Submit</Button>
@@ -142,4 +124,4 @@ const FormRenderer = ({
   );
 };
 
-export default Form.create()(FormRenderer);
+export default Form.create('form_renderer')(FormRenderer);

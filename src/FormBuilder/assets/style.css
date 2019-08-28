@@ -1,0 +1,11 @@
+.drag-handle {
+  color: #999;
+  cursor: move;
+}
+
+/* Ant overrides */
+.ant-form-item-label {
+  white-space: normal;
+  line-height: 1.5;
+  margin-bottom: 5;
+}
