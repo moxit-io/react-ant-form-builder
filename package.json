@@ -4,7 +4,7 @@
   "description": "A form builder for Ant Design",
   "main": "dist/index.js",
   "author": "Naod Yeheyes <naodya@gmail.com>",
-  "license": "MIT",
+  "license": "ICS",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "webpack-dev-server --mode development",
@@ -21,6 +21,13 @@
     "form-builder",
     "react"
   ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/moxit-io/react-ant-form-builder.git"
+  },
+  "bugs": {
+    "url": "https://github.com/moxit-io/react-ant-form-builder/issues"
+  },
   "eslintConfig": {
     "extends": "react-app"
   },
