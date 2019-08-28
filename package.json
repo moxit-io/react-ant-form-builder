@@ -1,0 +1,66 @@
+{
+  "name": "react-ant-form-builder",
+  "version": "1.0.0",
+  "description": "A form builder for Ant Design",
+  "main": "dist/index.js",
+  "author": "Naod Yeheyes <naodya@gmail.com>",
+  "license": "MIT",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "webpack-dev-server --mode development",
+    "transpile": "./node_modules/.bin/babel src -d dist --copy-files",
+    "prepublishOnly": "yarn transpile",
+    "build": "webpack --mode production",
+    "deploy": "gh-pages -d example/dist",
+    "publish-demo": "yarn prepublishOnly && yarn build && yarn deploy"
+  },
+  "keywords": [
+    "ant",
+    "design",
+    "form",
+    "form-builder",
+    "react"
+  ],
+  "eslintConfig": {
+    "extends": "react-app"
+  },
+  "dependencies": {
+    "antd": "^3.22.2",
+    "react": "^16.9.0",
+    "react-dom": "^16.9.0"
+  },
+  "devDependencies": {
+    "@babel/cli": "^7.5.5",
+    "@babel/core": "^7.5.5",
+    "@babel/preset-env": "^7.5.5",
+    "@babel/preset-react": "^7.0.0",
+    "babel-eslint": "^10.0.3",
+    "babel-loader": "^8.0.6",
+    "babel-plugin-import": "^1.12.1",
+    "css-loader": "^3.2.0",
+    "eslint": "^6.2.2",
+    "eslint-config-airbnb": "^18.0.1",
+    "eslint-config-prettier": "^6.1.0",
+    "eslint-loader": "^3.0.0",
+    "eslint-plugin-import": "^2.18.2",
+    "eslint-plugin-jsx-a11y": "^6.2.3",
+    "eslint-plugin-prettier": "^3.1.0",
+    "eslint-plugin-react": "^7.14.3",
+    "eslint-plugin-react-hooks": "^2.0.1",
+    "gh-pages": "^2.1.1",
+    "html-webpack-plugin": "^3.2.0",
+    "husky": "^3.0.4",
+    "nodemon": "^1.19.1",
+    "prettier": "^1.18.2",
+    "pretty-quick": "^1.11.1",
+    "style-loader": "^1.0.0",
+    "webpack": "^4.39.3",
+    "webpack-cli": "^3.3.7",
+    "webpack-dev-server": "^3.8.0"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "pretty-quick --staged"
+    }
+  }
+}
