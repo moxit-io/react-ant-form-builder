@@ -42,7 +42,6 @@ const SortableCard = SortableElement(
       if (onChange) onChange(allFields);
     };
 
-    // Handle options selection
     const handleOptionChange = change => {
       handleChange('options', change);
     };
@@ -90,7 +89,6 @@ const SortableCard = SortableElement(
                     placeholder="Question"
                     value={value.label || ''}
                     autosize={{ minRows: 2, maxRows: 6 }}
-                    style={{ marginBottom: 10 }}
                     onChange={e => {
                       handleChange('label', e.target.value);
                     }}
