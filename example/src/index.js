@@ -1,28 +1,45 @@
-import React from 'react';
+import React, { useState } from 'react';
 import ReactDOM from 'react-dom';
 
-import { Tabs, Layout } from 'antd';
+import { Layout, Col, Row } from 'antd';
 
 // Sample data.
-import { form, data } from './sample';
+// import { form, data } from './sample';
 
 // Components
 import FormBuilder from '../../src/FormBuilder';
 import FormRenderer from '../../src/FormRenderer';
 
-const { TabPane } = Tabs;
+const App = () => {
+  const [formSchema, setFormSchema] = useState({});
+  const [data, setData] = useState({});
 
-const App = () => (
-  <Layout style={{ background: '#FFF' }}>
-    <Tabs tabPosition="left" defaultActiveKey="1">
-      <TabPane tab="Builder" key="1">
-        <FormBuilder formStructure={form} />
-      </TabPane>
-      <TabPane tab="Renderer" key="2">
-        {/* Pass form Structure and data to the renderer. */}
-        <FormRenderer formStructure={form} data={data} />
-      </TabPane>
-    </Tabs>
-  </Layout>
-);
+  return (
+    <Layout style={{ background: '#FFF' }}>
+      <Row gutter={16}>
+        <Col span={14}>
+          <h1>Builder</h1>
+          <FormBuilder
+            formStructure={formSchema}
+            onSave={schema => {
+              setFormSchema(schema);
+            }}
+            onError={error => console.log(error)}
+          />
+        </Col>
+        <Col span={10}>
+          <h1>Renderer</h1>
+          <FormRenderer
+            formStructure={formSchema}
+            data={data}
+            onSave={changedData => {
+              setData(changedData);
+            }}
+            onError={error => console.log(error)}
+          />
+        </Col>
+      </Row>
+    </Layout>
+  );
+};
 ReactDOM.render(<App />, document.getElementById('root'));

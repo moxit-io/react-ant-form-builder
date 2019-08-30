@@ -1,5 +1,6 @@
 import React from 'react';
 import { Form, Input, Checkbox, Button, Radio, Select, Row, Col } from 'antd';
+import { isEmpty } from 'lodash';
 
 const selectFormElement = type => {
   switch (type) {
@@ -13,8 +14,6 @@ const selectFormElement = type => {
       return Checkbox.Group;
     case 'radio':
       return Radio.Group;
-    case 'select':
-      return Select;
     default:
       return null;
   }
@@ -28,7 +27,7 @@ export const FormItemRenderer = ({ formItem, decorator, initialValue }) => {
       <Form.Item label={label} help={fieldProps.help || ''}>
         {decorator(field, {
           ...fieldProps,
-          initialValue,
+          initialValue: initialValue || [],
         })(
           <Select {...fieldProps}>
             {fieldProps.options &&
@@ -48,7 +47,7 @@ export const FormItemRenderer = ({ formItem, decorator, initialValue }) => {
       <Form.Item label="" help={fieldProps.help || ''}>
         {decorator(field, {
           ...fieldProps,
-          initialValue,
+          initialValue: initialValue || false,
         })(<Checkbox>{label}</Checkbox>)}
       </Form.Item>
     );
@@ -75,20 +74,22 @@ const FormRenderer = ({
   colon = false,
   form: { getFieldDecorator, validateFields },
   data = {},
+  onSave,
+  onError,
   formStructure: { id, type, name, description, schema },
 }) => {
   const handleSubmit = e => {
     e.preventDefault();
     validateFields((err, formData) => {
       if (!err) {
-        console.log(formData);
-      }
+        if (onSave) onSave(formData);
+      } else if (onError) onError(err);
     });
   };
 
   getFieldDecorator('id', { initialValue: data.id || '' });
-  getFieldDecorator('formId', { initialValue: id });
-  getFieldDecorator('formType', { initialValue: type });
+  getFieldDecorator('formId', { initialValue: id || '' });
+  getFieldDecorator('type', { initialValue: type || '' });
 
   return (
     <Col>
@@ -104,7 +105,7 @@ const FormRenderer = ({
           </Row>
         )}
         <Form onSubmit={handleSubmit} colon={colon}>
-          {schema &&
+          {!isEmpty(schema) &&
             schema.map((fieldItem, index) => (
               <Row key={index}>
                 <FormItemRenderer
@@ -114,9 +115,11 @@ const FormRenderer = ({
                 />
               </Row>
             ))}
-          <div>
-            <Button htmlType="submit">Submit</Button>
-          </div>
+          {!isEmpty(schema) && (
+            <div>
+              <Button htmlType="submit">Submit</Button>
+            </div>
+          )}
         </Form>
       </Row>
     </Col>

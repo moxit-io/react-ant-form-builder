@@ -1,4 +1,4 @@
-import FormBuilder from "./FormBuilder";
-import FormRenderer from "./FormRenderer";
+import FormBuilder from './FormBuilder';
+import FormRenderer from './FormRenderer';
 
 export { FormBuilder, FormRenderer };

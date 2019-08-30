@@ -1,7 +1,7 @@
 import React from 'react';
 import { SortableElement, sortableHandle } from 'react-sortable-hoc';
 import { Card, Switch, Row, Icon, Input, Form, Col, Select } from 'antd';
-import { find } from 'lodash';
+import { find, camelCase } from 'lodash';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
   faTextWidth,
@@ -82,7 +82,7 @@ const SortableCard = SortableElement(
           ]}
         >
           <Row gutter={16}>
-            <Col span={20}>
+            <Col span={18}>
               <Form.Item required label="Question">
                 {value && value.type === 'textarea' ? (
                   <Input.TextArea
@@ -109,7 +109,7 @@ const SortableCard = SortableElement(
                 <RenderOptions value={value} onChange={handleOptionChange} />
               </Form.Item>
             </Col>
-            <Col span={4}>
+            <Col span={6}>
               <Row>
                 <Form.Item required label="Type">
                   <Select
@@ -117,11 +117,22 @@ const SortableCard = SortableElement(
                     style={{ width: '100%' }}
                     onSelect={selected => {
                       // On change, reset.
-                      handleChange('', {
+                      const newField = {
+                        label: `Question${items.length}`,
+                        field: camelCase(`Question $ {items.length}`),
                         type: selected,
-                        rules: [{ required: false, message: '' }],
-                        options: [],
-                      });
+                        rules: [
+                          { required: false, message: 'Field is required' },
+                        ],
+                      };
+                      if (
+                        selected === 'checkbox' ||
+                        selected === 'radio' ||
+                        selected === 'select'
+                      ) {
+                        newField.options = [];
+                      }
+                      handleChange('', newField);
                     }}
                   >
                     <Select.Option key="input" value="input">

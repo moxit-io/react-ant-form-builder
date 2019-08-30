@@ -1,6 +1,6 @@
 import React, { useRef } from 'react';
 import { Form, Row, Button, Input, List, Affix, Col } from 'antd';
-import { camelCase } from 'lodash';
+import { camelCase, isEmpty } from 'lodash';
 import arrayMove from 'array-move';
 import { SortableContainer } from 'react-sortable-hoc';
 
@@ -43,6 +43,17 @@ const SortableSchema = SortableContainer(({ items, header, onChange }) => {
     />
   );
 });
+
+const emptyField = [
+  {
+    type: 'input',
+    placeholder: 'Add question',
+    label: `Question1`,
+    field: camelCase(`Question1`),
+    rules: [{ required: false, message: 'Field is required' }],
+  },
+];
+
 const SchemaList = React.forwardRef(({ value, onChange, header }, ref) => {
   const bottomRef = useRef(null);
   const handleChange = change => onChange(change);
@@ -74,13 +85,11 @@ const SchemaList = React.forwardRef(({ value, onChange, header }, ref) => {
                   {
                     type: 'input',
                     placeholder: 'Add question',
-                    label: `Question ${value.length + 1}`,
+                    label: `Question${value.length + 1}`,
                     field: camelCase(`Question ${value.length + 1}`),
                     rules: [{ required: false, message: 'Field is required' }],
-                    options: [],
                   },
                 ];
-                // setList(updatedList);
                 handleChange(updatedList);
                 setTimeout(() => {
                   if (bottomRef.current) window.scrollTo(0, ref);
@@ -96,46 +105,35 @@ const SchemaList = React.forwardRef(({ value, onChange, header }, ref) => {
 });
 
 const FormBuilder = ({
+  onSave,
+  onError,
   formStructure = {},
   form: { getFieldDecorator, validateFields },
 }) => {
   const handleSubmit = e => {
     e.preventDefault();
-
     validateFields((err, formData) => {
       if (!err) {
-        console.log(formData);
-      }
+        if (onSave) onSave(formData);
+      } else if (onError) onError(err);
     });
   };
 
-  getFieldDecorator('id', { initialValue: formStructure.id });
-  getFieldDecorator('formType', { initialValue: formStructure.type });
+  if (formStructure.id)
+    getFieldDecorator('id', { initialValue: formStructure.id });
+  if (formStructure.type)
+    getFieldDecorator('type', { initialValue: formStructure.type });
 
   return (
     <Form colon={false} onSubmit={handleSubmit} noValidate>
       <Form.Item label="Name">
         {getFieldDecorator('name', {
-          initialValue: formStructure.name,
-          rules: [
-            {
-              required: true,
-              message: 'Form name is required',
-              whitespace: true,
-            },
-          ],
+          initialValue: formStructure.name || '',
         })(<Input placeholder="Add form name" />)}
       </Form.Item>
       <Form.Item label="Description">
         {getFieldDecorator('description', {
-          initialValue: formStructure.description,
-          rules: [
-            {
-              required: true,
-              message: 'Form description is required',
-              whitespace: true,
-            },
-          ],
+          initialValue: formStructure.description || '',
         })(
           <Input.TextArea
             placeholder="Add form description"
@@ -146,15 +144,11 @@ const FormBuilder = ({
       <Row>
         <Form.Item>
           {getFieldDecorator('schema', {
-            initialValue: formStructure.schema,
+            initialValue: !isEmpty(formStructure.schema)
+              ? formStructure.schema
+              : emptyField,
           })(<SchemaList />)}
         </Form.Item>
-
-        {/* <Col>
-          {getFieldDecorator('schema', {
-            initialValue: { schema: formStructure.schema, bottomRef },
-          })(<AddField />)}
-        </Col> */}
       </Row>
 
       <div
