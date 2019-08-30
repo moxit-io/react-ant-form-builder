@@ -20,7 +20,11 @@ export const form = {
     },
 
     {
-      label: `There are many variations of passages of Lorem Ipsum available, but the majority have suffered alteration in some form, by injected humour, or randomised words which don't look even slightly believable. If you are going to use a passage of Lorem Ipsum, you need to be sure there isn't anything embarrassing hidden in the middle of text. All the Lorem Ipsum generators on the Internet tend to repeat predefined chunks as necessary, making this the first true generator on the Internet. It uses a dictionary of over 200 Latin words, combined with a handful of model sentence structures, to generate Lorem Ipsum which looks reasonable. The generated Lorem Ipsum is therefore always free from repetition, injected humour, or non-characteristic words etc.`,
+      label: `There are many variations of passages of Lorem Ipsum available, but the majority have suffered alteration in some form, by injected humour, or randomised words which don't look even slightly believable. If you are going to use a passage of Lorem Ipsum, you need to be sure there isn't anything embarrassing hidden in the middle of text.
+
+      All the Lorem Ipsum generators on the Internet tend to repeat predefined chunks as necessary, making this the first true generator on the Internet. It uses a dictionary of over 200 Latin words, combined with a handful of model sentence structures, to generate Lorem Ipsum which looks reasonable. The generated Lorem Ipsum is therefore always free from repetition, injected humour, or non-characteristic words etc.
+      
+      All the Lorem Ipsum generators on the Internet tend to repeat predefined chunks as necessary, making this the first true generator on the Internet. It uses a dictionary of over 200 Latin words, combined with a handful of model sentence structures, to generate Lorem Ipsum which looks reasonable. The generated Lorem Ipsum is therefore always free from repetition, injected humour, or non-characteristic words etc.`,
       field: 'summary',
       type: 'textarea',
       size: 'large',
@@ -28,7 +32,7 @@ export const form = {
       help: 'Add a short description',
       rules: [
         {
-          required: true,
+          required: false,
           message: 'Summary is required',
           whitespace: true,
         },
@@ -70,7 +74,7 @@ export const form = {
       placeholder: 'Select Gender',
       rules: [
         {
-          required: true,
+          required: false,
           message: 'Gender is required',
         },
       ],
@@ -121,13 +125,12 @@ export const form = {
     },
 
     {
-      label: 'Confirm',
-      text: 'I confirm that the above information is correct.',
+      label: 'I confirm that the above information is correct.',
       field: 'confirm',
       type: 'confirm',
       valuePropName: 'checked',
       placeholder: 'Confirm information',
-      help: 'You are required to confirm.',
+      help: 'Please check above to confirm the added information is correct',
       rules: [
         {
           required: true,

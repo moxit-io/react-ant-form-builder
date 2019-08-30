@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Form, Row, Button, Input, List } from 'antd';
+import { Form, Row, Button, Input, List, Affix, Col } from 'antd';
 
 import arrayMove from 'array-move';
 import { SortableContainer } from 'react-sortable-hoc';
@@ -30,7 +30,7 @@ const SortableList = SortableContainer(
               onChange={onChange}
               onDelete={onDelete}
               index={index}
-              value={item}
+              value={{ ...item, index, items }}
             />
           );
         }}
@@ -92,37 +92,48 @@ const FormBuilder = ({
           ],
         })(<Input.TextArea placeholder="Add form description" />)}
       </Form.Item>
+      <Row>
+        <Col span={23}>
+          <Row style={{ background: '#ECECEC' }}>
+            <SortableList
+              items={data.schema}
+              onChange={updatedSchema => {
+                setData({ ...data, schema: updatedSchema });
+              }}
+              onDelete={deletedItem => {
+                console.log(deletedItem);
+                if (deletedItem) {
+                  const updatedList = data.schema.filter(
+                    item => item.field !== deletedItem.field
+                  );
+                  setData({ ...data, schema: updatedList });
+                }
+              }}
+              onSortEnd={({ oldIndex, newIndex }) => {
+                // // Re-assigned avoid mutation.
+                let updatedSchema = data.schema;
+                updatedSchema = arrayMove(updatedSchema, oldIndex, newIndex);
 
-      <Row
-        style={{ background: '#ECECEC', padding: '30px', marginTop: '30px' }}
-      >
-        <SortableList
-          // ref={ref}
-          items={data.schema || []}
-          // header={header}
-          onChange={value => {
-            console.log({ value });
-          }}
-          onDelete={deletedItem => {
-            console.log(deletedItem);
-            if (deletedItem) {
-              const updatedList = data.schema.filter(
-                item => item.field !== deletedItem.field
-              );
-              setData({ ...data, schema: updatedList });
-            }
-          }}
-          onSortEnd={({ oldIndex, newIndex }) => {
-            // // Re-assigned avoid mutation.
-            let updatedList = data.schema;
-            updatedList = arrayMove(updatedList, oldIndex, newIndex);
-
-            setData({ ...data, schema: updatedList });
-          }}
-        />
+                setData({ ...data, schema: updatedSchema });
+              }}
+            />
+          </Row>
+        </Col>
+        <Col>
+          <Row type="flex" justify="center">
+            <Affix offsetTop={400}>
+              <Button icon="plus" />
+            </Affix>
+          </Row>
+        </Col>
       </Row>
-      <div>
-        <Button htmlType="submit">Submit</Button>
+
+      <div
+        style={{
+          margin: '30 0',
+        }}
+      >
+        <Button htmlType="submit">Save</Button>
       </div>
     </Form>
   );

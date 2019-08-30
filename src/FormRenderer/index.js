@@ -15,7 +15,6 @@ const selectFormElement = type => {
       return Radio.Group;
     case 'select':
       return Select;
-
     default:
       return null;
   }
@@ -46,11 +45,11 @@ export const FormItemRenderer = ({ formItem, decorator, initialValue }) => {
   // Confirm checkbox
   if (type === 'confirm') {
     return (
-      <Form.Item label={label} help={fieldProps.help || ''}>
+      <Form.Item label="" help={fieldProps.help || ''}>
         {decorator(field, {
           ...fieldProps,
           initialValue,
-        })(<Checkbox>{fieldProps.text || ''}</Checkbox>)}
+        })(<Checkbox>{label}</Checkbox>)}
       </Form.Item>
     );
   }
