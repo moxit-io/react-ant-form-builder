@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useRef } from 'react';
 import { Form, Row, Button, Input, List, Affix, Col } from 'antd';
 import { camelCase } from 'lodash';
 import arrayMove from 'array-move';
@@ -43,39 +43,62 @@ const SortableSchema = SortableContainer(({ items, header, onChange }) => {
     />
   );
 });
-const SchemaList = React.memo(
-  React.forwardRef(({ value, onChange, header }, ref) => (
-    <SortableSchema
-      ref={ref}
-      items={value}
-      onChange={onChange}
-      header={header}
-      onSortEnd={({ oldIndex, newIndex }) => {
-        // Re-assigned avoid mutation.
-        let updatedSchema = value;
-        updatedSchema = arrayMove(updatedSchema, oldIndex, newIndex);
-        onChange(updatedSchema);
-      }}
-    />
-  ))
-);
+const SchemaList = React.forwardRef(({ value, onChange, header }, ref) => {
+  const bottomRef = useRef(null);
+  const handleChange = change => onChange(change);
+  return (
+    <Row>
+      <Col span={22} ref={ref}>
+        <Row style={{ background: '#ECECEC' }}>
+          <SortableSchema
+            items={value}
+            onChange={onChange}
+            header={header}
+            onSortEnd={({ oldIndex, newIndex }) => {
+              // Re-assigned avoid mutation.
+              let updatedSchema = value;
+              updatedSchema = arrayMove(updatedSchema, oldIndex, newIndex);
+              handleChange(updatedSchema);
+            }}
+          />
+        </Row>
+      </Col>
+      <Col>
+        <Row type="flex" justify="center">
+          <Affix offsetTop={400}>
+            <Button
+              icon="plus"
+              onClick={() => {
+                const updatedList = [
+                  ...value,
+                  {
+                    type: 'input',
+                    placeholder: 'Add question',
+                    label: `Question ${value.length + 1}`,
+                    field: camelCase(`Question ${value.length + 1}`),
+                    rules: [{ required: false, message: 'Field is required' }],
+                    options: [],
+                  },
+                ];
+                // setList(updatedList);
+                handleChange(updatedList);
+                setTimeout(() => {
+                  if (bottomRef.current) window.scrollTo(0, ref);
+                }, 200);
+              }}
+            />
+          </Affix>
+          <div ref={bottomRef} />
+        </Row>
+      </Col>
+    </Row>
+  );
+});
 
 const FormBuilder = ({
   formStructure = {},
   form: { getFieldDecorator, validateFields },
 }) => {
-  const [data, setData] = useState({
-    name: '',
-    description: '',
-    schema: [],
-  });
-
-  useEffect(() => {
-    if (formStructure) setData(formStructure);
-  }, [formStructure]);
-
-  const bottomRef = useRef(null);
-
   const handleSubmit = e => {
     e.preventDefault();
 
@@ -86,14 +109,14 @@ const FormBuilder = ({
     });
   };
 
-  getFieldDecorator('id', { initialValue: data.id });
-  getFieldDecorator('formType', { initialValue: data.type });
+  getFieldDecorator('id', { initialValue: formStructure.id });
+  getFieldDecorator('formType', { initialValue: formStructure.type });
 
   return (
     <Form colon={false} onSubmit={handleSubmit} noValidate>
       <Form.Item label="Name">
         {getFieldDecorator('name', {
-          initialValue: data.name,
+          initialValue: formStructure.name,
           rules: [
             {
               required: true,
@@ -105,7 +128,7 @@ const FormBuilder = ({
       </Form.Item>
       <Form.Item label="Description">
         {getFieldDecorator('description', {
-          initialValue: data.description,
+          initialValue: formStructure.description,
           rules: [
             {
               required: true,
@@ -121,43 +144,17 @@ const FormBuilder = ({
         )}
       </Form.Item>
       <Row>
-        <Col span={23}>
-          <Row style={{ background: '#ECECEC' }}>
-            <Form.Item>
-              {getFieldDecorator('schema', {
-                initialValue: data.schema,
-              })(<SchemaList />)}
-            </Form.Item>
-            <div ref={bottomRef} />
-          </Row>
-        </Col>
-        <Col>
-          <Row type="flex" justify="center">
-            <Affix offsetTop={400}>
-              <Button
-                icon="plus"
-                onClick={() => {
-                  setData({
-                    ...data,
-                    schema: [
-                      ...data.schema,
-                      {
-                        label: `Question ${data.schema.length + 1}`,
-                        field: camelCase(`Question ${data.schema.length + 1}`),
-                        type: 'input',
-                        placeholder: 'Add question',
-                        options: [],
-                      },
-                    ],
-                  });
-                  setTimeout(() => {
-                    window.scrollTo(0, bottomRef.current.offsetTop);
-                  }, 200);
-                }}
-              />
-            </Affix>
-          </Row>
-        </Col>
+        <Form.Item>
+          {getFieldDecorator('schema', {
+            initialValue: formStructure.schema,
+          })(<SchemaList />)}
+        </Form.Item>
+
+        {/* <Col>
+          {getFieldDecorator('schema', {
+            initialValue: { schema: formStructure.schema, bottomRef },
+          })(<AddField />)}
+        </Col> */}
       </Row>
 
       <div
