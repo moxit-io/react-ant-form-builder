@@ -90,7 +90,12 @@ const FormBuilder = ({
               whitespace: true,
             },
           ],
-        })(<Input.TextArea placeholder="Add form description" />)}
+        })(
+          <Input.TextArea
+            placeholder="Add form description"
+            autosize={{ minRows: 2, maxRows: 6 }}
+          />
+        )}
       </Form.Item>
       <Row>
         <Col span={23}>
