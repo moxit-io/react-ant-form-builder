@@ -6,20 +6,10 @@ const htmlWebpackPlugin = new HtmlWebpackPlugin({
   filename: './index.html',
 });
 module.exports = {
-  entry: {
-    index: path.join(__dirname, 'example/src/index.js'),
-    renderer: path.join(__dirname, 'src/FormRenderer/index.js'),
-    builder: path.join(__dirname, 'src/FormBuilder/index.js'),
-    card: path.join(__dirname, 'src/FormBuilder/SortableCard.js'),
-  },
+  entry: path.join(__dirname, 'example/src/index.js'),
   output: {
     path: path.join(__dirname, 'example/dist'),
-    filename: '[name].bundle.js',
-  },
-  optimization: {
-    splitChunks: {
-      chunks: 'all',
-    },
+    filename: 'bundle.js',
   },
   module: {
     rules: [
