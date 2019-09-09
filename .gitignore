@@ -1,4 +1,4 @@
 node_modules
-dist
+example/dist
 yarn-error.log
 package-error.log
