@@ -47,7 +47,7 @@ const SortableCard = SortableElement(
     };
 
     return (
-      <Row type="flex" className="sortable-helper" style={{ margin: 10 }}>
+      <Row type="flex" style={{ zIndex: 1000, margin: 10 }}>
         <Card
           title={<DragHandle />}
           style={{ width: '100%' }}
