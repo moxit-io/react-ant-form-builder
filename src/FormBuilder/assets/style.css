@@ -12,5 +12,5 @@
 }
 
 .sortable-helper {
-  z-index: 1000px !important;
+  z-index: 1000 !important;
 }
