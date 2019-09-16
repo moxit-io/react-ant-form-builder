@@ -192,6 +192,7 @@ var SortableCard = (0, _reactSortableHoc.SortableElement)(function(_ref) {
     {
       type: 'flex',
       style: {
+        zIndex: 1000,
         margin: 10,
       },
     },
