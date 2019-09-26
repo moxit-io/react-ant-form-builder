@@ -5,19 +5,35 @@ Object.defineProperty(exports, '__esModule', {
 });
 exports['default'] = exports.FormItemRenderer = void 0;
 
+require('antd/es/col/style/css');
+
 var _col = _interopRequireDefault(require('antd/es/col'));
+
+require('antd/es/button/style/css');
 
 var _button = _interopRequireDefault(require('antd/es/button'));
 
+require('antd/es/row/style/css');
+
 var _row = _interopRequireDefault(require('antd/es/row'));
+
+require('antd/es/form/style/css');
 
 var _form = _interopRequireDefault(require('antd/es/form'));
 
+require('antd/es/select/style/css');
+
 var _select = _interopRequireDefault(require('antd/es/select'));
+
+require('antd/es/radio/style/css');
 
 var _radio = _interopRequireDefault(require('antd/es/radio'));
 
+require('antd/es/checkbox/style/css');
+
 var _checkbox = _interopRequireDefault(require('antd/es/checkbox'));
+
+require('antd/es/input/style/css');
 
 var _input = _interopRequireDefault(require('antd/es/input'));
 

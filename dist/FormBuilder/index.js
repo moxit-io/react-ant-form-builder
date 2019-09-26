@@ -5,17 +5,31 @@ Object.defineProperty(exports, '__esModule', {
 });
 exports['default'] = void 0;
 
+require('antd/es/form/style/css');
+
 var _form = _interopRequireDefault(require('antd/es/form'));
+
+require('antd/es/input/style/css');
 
 var _input = _interopRequireDefault(require('antd/es/input'));
 
+require('antd/es/affix/style/css');
+
 var _affix = _interopRequireDefault(require('antd/es/affix'));
+
+require('antd/es/button/style/css');
 
 var _button = _interopRequireDefault(require('antd/es/button'));
 
+require('antd/es/col/style/css');
+
 var _col = _interopRequireDefault(require('antd/es/col'));
 
+require('antd/es/row/style/css');
+
 var _row = _interopRequireDefault(require('antd/es/row'));
+
+require('antd/es/list/style/css');
 
 var _list = _interopRequireDefault(require('antd/es/list'));
 
@@ -31,29 +45,45 @@ require('./assets/style.css');
 
 var _SortableCard = _interopRequireDefault(require('./SortableCard'));
 
+function _getRequireWildcardCache() {
+  if (typeof WeakMap !== 'function') return null;
+  var cache = new WeakMap();
+  _getRequireWildcardCache = function _getRequireWildcardCache() {
+    return cache;
+  };
+  return cache;
+}
+
 function _interopRequireWildcard(obj) {
   if (obj && obj.__esModule) {
     return obj;
-  } else {
-    var newObj = {};
-    if (obj != null) {
-      for (var key in obj) {
-        if (Object.prototype.hasOwnProperty.call(obj, key)) {
-          var desc =
-            Object.defineProperty && Object.getOwnPropertyDescriptor
-              ? Object.getOwnPropertyDescriptor(obj, key)
-              : {};
-          if (desc.get || desc.set) {
-            Object.defineProperty(newObj, key, desc);
-          } else {
-            newObj[key] = obj[key];
-          }
+  }
+  var cache = _getRequireWildcardCache();
+  if (cache && cache.has(obj)) {
+    return cache.get(obj);
+  }
+  var newObj = {};
+  if (obj != null) {
+    var hasPropertyDescriptor =
+      Object.defineProperty && Object.getOwnPropertyDescriptor;
+    for (var key in obj) {
+      if (Object.prototype.hasOwnProperty.call(obj, key)) {
+        var desc = hasPropertyDescriptor
+          ? Object.getOwnPropertyDescriptor(obj, key)
+          : null;
+        if (desc && (desc.get || desc.set)) {
+          Object.defineProperty(newObj, key, desc);
+        } else {
+          newObj[key] = obj[key];
         }
       }
     }
-    newObj['default'] = obj;
-    return newObj;
   }
+  newObj['default'] = obj;
+  if (cache) {
+    cache.set(obj, newObj);
+  }
+  return newObj;
 }
 
 function _interopRequireDefault(obj) {
