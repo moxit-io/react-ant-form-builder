@@ -5,19 +5,9 @@ Object.defineProperty(exports, '__esModule', {
 });
 exports['default'] = void 0;
 
-var _row = _interopRequireDefault(require('antd/es/row'));
-
-var _input = _interopRequireDefault(require('antd/es/input'));
-
-var _col = _interopRequireDefault(require('antd/es/col'));
-
-var _checkbox = _interopRequireDefault(require('antd/es/checkbox'));
-
-var _radio = _interopRequireDefault(require('antd/es/radio'));
-
-var _button = _interopRequireDefault(require('antd/es/button'));
-
 var _react = _interopRequireWildcard(require('react'));
+
+var _antd = require('antd');
 
 var _lodash = require('lodash');
 
@@ -60,10 +50,6 @@ function _interopRequireWildcard(obj) {
     cache.set(obj, newObj);
   }
   return newObj;
-}
-
-function _interopRequireDefault(obj) {
-  return obj && obj.__esModule ? obj : { default: obj };
 }
 
 function _toConsumableArray(arr) {
@@ -160,7 +146,7 @@ var RenderOptions = function RenderOptions(_ref) {
     setInputValue = _useState4[1];
 
   var addNewButton = _react['default'].createElement(
-    _button['default'],
+    _antd.Button,
     {
       type: 'ghost',
       title: 'Add',
@@ -184,7 +170,7 @@ var RenderOptions = function RenderOptions(_ref) {
   );
 
   var removeButton = function removeButton(removed) {
-    return _react['default'].createElement(_button['default'], {
+    return _react['default'].createElement(_antd.Button, {
       type: 'link',
       icon: 'close',
       size: 'small',
@@ -210,7 +196,7 @@ var RenderOptions = function RenderOptions(_ref) {
           key: index,
         },
         _react['default'].createElement(
-          _row['default'],
+          _antd.Row,
           {
             type: 'flex',
             justify: 'start',
@@ -218,29 +204,29 @@ var RenderOptions = function RenderOptions(_ref) {
             gutter: 16,
           },
           _react['default'].createElement(
-            _col['default'],
+            _antd.Col,
             {
               span: 1,
             },
             type === 'radio' &&
-              _react['default'].createElement(_radio['default'], {
+              _react['default'].createElement(_antd.Radio, {
                 disabled: true,
               }),
             type === 'checkbox' &&
-              _react['default'].createElement(_checkbox['default'], {
+              _react['default'].createElement(_antd.Checkbox, {
                 disabled: true,
               }),
             type === 'select' &&
               _react['default'].createElement('span', null, index + 1)
           ),
           _react['default'].createElement(
-            _col['default'],
+            _antd.Col,
             {
               span: 7,
             },
             index !== clickedIndex &&
               _react['default'].createElement(
-                _button['default'],
+                _antd.Button,
                 {
                   type: 'dashed',
                   block: true,
@@ -252,7 +238,7 @@ var RenderOptions = function RenderOptions(_ref) {
                 option.label
               ),
             index === clickedIndex &&
-              _react['default'].createElement(_input['default'], {
+              _react['default'].createElement(_antd.Input, {
                 value: inputValue,
                 style: {
                   width: 300,
@@ -271,7 +257,7 @@ var RenderOptions = function RenderOptions(_ref) {
               })
           ),
           _react['default'].createElement(
-            _col['default'],
+            _antd.Col,
             {
               span: 4,
             },
