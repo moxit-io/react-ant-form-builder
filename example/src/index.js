@@ -3,8 +3,7 @@ import ReactDOM from 'react-dom';
 
 import { Layout, Col, Row } from 'antd';
 
-// Sample data.
-// import { form, data } from './sample';
+import './App.css';
 
 // Components
 import FormBuilder from '../../src/FormBuilder';

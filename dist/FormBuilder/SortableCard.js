@@ -5,35 +5,19 @@ Object.defineProperty(exports, '__esModule', {
 });
 exports['default'] = void 0;
 
-require('antd/es/card/style/css');
-
 var _card = _interopRequireDefault(require('antd/es/card'));
-
-require('antd/es/select/style/css');
 
 var _select = _interopRequireDefault(require('antd/es/select'));
 
-require('antd/es/col/style/css');
-
 var _col = _interopRequireDefault(require('antd/es/col'));
-
-require('antd/es/form/style/css');
 
 var _form = _interopRequireDefault(require('antd/es/form'));
 
-require('antd/es/input/style/css');
-
 var _input = _interopRequireDefault(require('antd/es/input'));
-
-require('antd/es/switch/style/css');
 
 var _switch = _interopRequireDefault(require('antd/es/switch'));
 
-require('antd/es/icon/style/css');
-
 var _icon = _interopRequireDefault(require('antd/es/icon'));
-
-require('antd/es/row/style/css');
 
 var _row = _interopRequireDefault(require('antd/es/row'));
 
