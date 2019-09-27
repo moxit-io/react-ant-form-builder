@@ -3,8 +3,6 @@ import ReactDOM from 'react-dom';
 
 import { Layout, Col, Row } from 'antd';
 
-import './App.css';
-
 // Components
 import FormBuilder from '../../src/FormBuilder';
 import FormRenderer from '../../src/FormRenderer';

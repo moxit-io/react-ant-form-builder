@@ -5,7 +5,6 @@ import arrayMove from 'array-move';
 import { SortableContainer } from 'react-sortable-hoc';
 
 // Import style
-import './assets/style.css';
 import SortableCard from './SortableCard';
 
 const SortableItem = ({ index, value, onDelete, onChange }) => (

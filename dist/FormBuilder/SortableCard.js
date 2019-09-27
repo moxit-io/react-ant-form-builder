@@ -5,11 +5,41 @@ Object.defineProperty(exports, '__esModule', {
 });
 exports['default'] = void 0;
 
+require('antd/es/card/style');
+
+var _card = _interopRequireDefault(require('antd/es/card'));
+
+require('antd/es/select/style');
+
+var _select = _interopRequireDefault(require('antd/es/select'));
+
+require('antd/es/col/style');
+
+var _col = _interopRequireDefault(require('antd/es/col'));
+
+require('antd/es/form/style');
+
+var _form = _interopRequireDefault(require('antd/es/form'));
+
+require('antd/es/input/style');
+
+var _input = _interopRequireDefault(require('antd/es/input'));
+
+require('antd/es/switch/style');
+
+var _switch = _interopRequireDefault(require('antd/es/switch'));
+
+require('antd/es/icon/style');
+
+var _icon = _interopRequireDefault(require('antd/es/icon'));
+
+require('antd/es/row/style');
+
+var _row = _interopRequireDefault(require('antd/es/row'));
+
 var _react = _interopRequireDefault(require('react'));
 
 var _reactSortableHoc = require('react-sortable-hoc');
-
-var _antd = require('antd');
 
 var _lodash = require('lodash');
 
@@ -103,7 +133,7 @@ function _objectWithoutPropertiesLoose(source, excluded) {
 
 var DragHandle = (0, _reactSortableHoc.sortableHandle)(function() {
   return _react['default'].createElement(
-    _antd.Row,
+    _row['default'],
     {
       className: 'drag-handle',
       type: 'flex',
@@ -158,7 +188,7 @@ var SortableCard = (0, _reactSortableHoc.SortableElement)(function(_ref) {
   };
 
   return _react['default'].createElement(
-    _antd.Row,
+    _row['default'],
     {
       type: 'flex',
       style: {
@@ -167,21 +197,21 @@ var SortableCard = (0, _reactSortableHoc.SortableElement)(function(_ref) {
       },
     },
     _react['default'].createElement(
-      _antd.Card,
+      _card['default'],
       {
         title: _react['default'].createElement(DragHandle, null),
         style: {
           width: '100%',
         },
         actions: [
-          _react['default'].createElement(_antd.Icon, {
+          _react['default'].createElement(_icon['default'], {
             type: 'delete',
             key: 'delete',
             onClick: function onClick() {
               if (onDelete) onDelete(value);
             },
           }),
-          _react['default'].createElement(_antd.Switch, {
+          _react['default'].createElement(_switch['default'], {
             checkedChildren: 'Required',
             unCheckedChildren: 'Not required',
             checked: getRule(value.rules).required,
@@ -200,30 +230,30 @@ var SortableCard = (0, _reactSortableHoc.SortableElement)(function(_ref) {
               }
             },
           }),
-          _react['default'].createElement(_antd.Icon, {
+          _react['default'].createElement(_icon['default'], {
             type: 'ellipsis',
             key: 'ellipsis',
           }),
         ],
       },
       _react['default'].createElement(
-        _antd.Row,
+        _row['default'],
         {
           gutter: 16,
         },
         _react['default'].createElement(
-          _antd.Col,
+          _col['default'],
           {
             span: 18,
           },
           _react['default'].createElement(
-            _antd.Form.Item,
+            _form['default'].Item,
             {
               required: true,
               label: 'Question',
             },
             value && value.type === 'textarea'
-              ? _react['default'].createElement(_antd.Input.TextArea, {
+              ? _react['default'].createElement(_input['default'].TextArea, {
                   placeholder: 'Question',
                   value: value.label || '',
                   autosize: {
@@ -234,7 +264,7 @@ var SortableCard = (0, _reactSortableHoc.SortableElement)(function(_ref) {
                     handleChange('label', e.target.value);
                   },
                 })
-              : _react['default'].createElement(_antd.Input, {
+              : _react['default'].createElement(_input['default'], {
                   placeholder: 'Question',
                   value: value.label || '',
                   onChange: function onChange(e) {
@@ -243,7 +273,7 @@ var SortableCard = (0, _reactSortableHoc.SortableElement)(function(_ref) {
                 })
           ),
           _react['default'].createElement(
-            _antd.Form.Item,
+            _form['default'].Item,
             null,
             _react['default'].createElement(_RenderOptions['default'], {
               value: value,
@@ -252,21 +282,21 @@ var SortableCard = (0, _reactSortableHoc.SortableElement)(function(_ref) {
           )
         ),
         _react['default'].createElement(
-          _antd.Col,
+          _col['default'],
           {
             span: 6,
           },
           _react['default'].createElement(
-            _antd.Row,
+            _row['default'],
             null,
             _react['default'].createElement(
-              _antd.Form.Item,
+              _form['default'].Item,
               {
                 required: true,
                 label: 'Type',
               },
               _react['default'].createElement(
-                _antd.Select,
+                _select['default'],
                 {
                   value: value.type || '',
                   style: {
@@ -300,7 +330,7 @@ var SortableCard = (0, _reactSortableHoc.SortableElement)(function(_ref) {
                   },
                 },
                 _react['default'].createElement(
-                  _antd.Select.Option,
+                  _select['default'].Option,
                   {
                     key: 'input',
                     value: 'input',
@@ -322,7 +352,7 @@ var SortableCard = (0, _reactSortableHoc.SortableElement)(function(_ref) {
                   )
                 ),
                 _react['default'].createElement(
-                  _antd.Select.Option,
+                  _select['default'].Option,
                   {
                     key: 'textarea',
                     value: 'textarea',
@@ -344,7 +374,7 @@ var SortableCard = (0, _reactSortableHoc.SortableElement)(function(_ref) {
                   )
                 ),
                 _react['default'].createElement(
-                  _antd.Select.Option,
+                  _select['default'].Option,
                   {
                     key: 'radio',
                     value: 'radio',
@@ -366,7 +396,7 @@ var SortableCard = (0, _reactSortableHoc.SortableElement)(function(_ref) {
                   )
                 ),
                 _react['default'].createElement(
-                  _antd.Select.Option,
+                  _select['default'].Option,
                   {
                     key: 'checkbox',
                     value: 'checkbox',
@@ -388,7 +418,7 @@ var SortableCard = (0, _reactSortableHoc.SortableElement)(function(_ref) {
                   )
                 ),
                 _react['default'].createElement(
-                  _antd.Select.Option,
+                  _select['default'].Option,
                   {
                     key: 'select',
                     value: 'select',
@@ -410,7 +440,7 @@ var SortableCard = (0, _reactSortableHoc.SortableElement)(function(_ref) {
                   )
                 ),
                 _react['default'].createElement(
-                  _antd.Select.Option,
+                  _select['default'].Option,
                   {
                     key: 'confirm',
                     value: 'confirm',

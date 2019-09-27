@@ -5,9 +5,35 @@ Object.defineProperty(exports, '__esModule', {
 });
 exports['default'] = void 0;
 
-var _react = _interopRequireWildcard(require('react'));
+require('antd/es/form/style');
 
-var _antd = require('antd');
+var _form = _interopRequireDefault(require('antd/es/form'));
+
+require('antd/es/input/style');
+
+var _input = _interopRequireDefault(require('antd/es/input'));
+
+require('antd/es/affix/style');
+
+var _affix = _interopRequireDefault(require('antd/es/affix'));
+
+require('antd/es/button/style');
+
+var _button = _interopRequireDefault(require('antd/es/button'));
+
+require('antd/es/col/style');
+
+var _col = _interopRequireDefault(require('antd/es/col'));
+
+require('antd/es/row/style');
+
+var _row = _interopRequireDefault(require('antd/es/row'));
+
+require('antd/es/list/style');
+
+var _list = _interopRequireDefault(require('antd/es/list'));
+
+var _react = _interopRequireWildcard(require('react'));
 
 var _lodash = require('lodash');
 
@@ -15,13 +41,7 @@ var _arrayMove = _interopRequireDefault(require('array-move'));
 
 var _reactSortableHoc = require('react-sortable-hoc');
 
-require('./assets/style.css');
-
 var _SortableCard = _interopRequireDefault(require('./SortableCard'));
-
-function _interopRequireDefault(obj) {
-  return obj && obj.__esModule ? obj : { default: obj };
-}
 
 function _getRequireWildcardCache() {
   if (typeof WeakMap !== 'function') return null;
@@ -62,6 +82,10 @@ function _interopRequireWildcard(obj) {
     cache.set(obj, newObj);
   }
   return newObj;
+}
+
+function _interopRequireDefault(obj) {
+  return obj && obj.__esModule ? obj : { default: obj };
 }
 
 function _toConsumableArray(arr) {
@@ -157,7 +181,7 @@ var SortableSchema = (0, _reactSortableHoc.SortableContainer)(function(_ref2) {
   var items = _ref2.items,
     header = _ref2.header,
     onChange = _ref2.onChange;
-  return _react['default'].createElement(_antd.List, {
+  return _react['default'].createElement(_list['default'], {
     header: header,
     size: 'large',
     dataSource: items,
@@ -207,16 +231,16 @@ var SchemaList = _react['default'].forwardRef(function(_ref3, ref) {
   };
 
   return _react['default'].createElement(
-    _antd.Row,
+    _row['default'],
     null,
     _react['default'].createElement(
-      _antd.Col,
+      _col['default'],
       {
         span: 22,
         ref: ref,
       },
       _react['default'].createElement(
-        _antd.Row,
+        _row['default'],
         {
           style: {
             background: '#ECECEC',
@@ -242,20 +266,20 @@ var SchemaList = _react['default'].forwardRef(function(_ref3, ref) {
       )
     ),
     _react['default'].createElement(
-      _antd.Col,
+      _col['default'],
       null,
       _react['default'].createElement(
-        _antd.Row,
+        _row['default'],
         {
           type: 'flex',
           justify: 'center',
         },
         _react['default'].createElement(
-          _antd.Affix,
+          _affix['default'],
           {
             offsetTop: 400,
           },
-          _react['default'].createElement(_antd.Button, {
+          _react['default'].createElement(_button['default'], {
             icon: 'plus',
             onClick: function onClick() {
               var updatedList = [].concat(_toConsumableArray(value), [
@@ -316,34 +340,34 @@ var FormBuilder = function FormBuilder(_ref5) {
       initialValue: formStructure.type,
     });
   return _react['default'].createElement(
-    _antd.Form,
+    _form['default'],
     {
       colon: false,
       onSubmit: handleSubmit,
       noValidate: true,
     },
     _react['default'].createElement(
-      _antd.Form.Item,
+      _form['default'].Item,
       {
         label: 'Name',
       },
       getFieldDecorator('name', {
         initialValue: formStructure.name || '',
       })(
-        _react['default'].createElement(_antd.Input, {
+        _react['default'].createElement(_input['default'], {
           placeholder: 'Add form name',
         })
       )
     ),
     _react['default'].createElement(
-      _antd.Form.Item,
+      _form['default'].Item,
       {
         label: 'Description',
       },
       getFieldDecorator('description', {
         initialValue: formStructure.description || '',
       })(
-        _react['default'].createElement(_antd.Input.TextArea, {
+        _react['default'].createElement(_input['default'].TextArea, {
           placeholder: 'Add form description',
           autosize: {
             minRows: 2,
@@ -353,10 +377,10 @@ var FormBuilder = function FormBuilder(_ref5) {
       )
     ),
     _react['default'].createElement(
-      _antd.Row,
+      _row['default'],
       null,
       _react['default'].createElement(
-        _antd.Form.Item,
+        _form['default'].Item,
         null,
         getFieldDecorator('schema', {
           initialValue: !(0, _lodash.isEmpty)(formStructure.schema)
@@ -373,7 +397,7 @@ var FormBuilder = function FormBuilder(_ref5) {
         },
       },
       _react['default'].createElement(
-        _antd.Button,
+        _button['default'],
         {
           htmlType: 'submit',
         },
@@ -383,6 +407,6 @@ var FormBuilder = function FormBuilder(_ref5) {
   );
 };
 
-var _default = _antd.Form.create('form_builder')(FormBuilder);
+var _default = _form['default'].create('form_builder')(FormBuilder);
 
 exports['default'] = _default;

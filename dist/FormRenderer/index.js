@@ -5,9 +5,39 @@ Object.defineProperty(exports, '__esModule', {
 });
 exports['default'] = exports.FormItemRenderer = void 0;
 
-var _react = _interopRequireDefault(require('react'));
+require('antd/es/col/style');
 
-var _antd = require('antd');
+var _col = _interopRequireDefault(require('antd/es/col'));
+
+require('antd/es/button/style');
+
+var _button = _interopRequireDefault(require('antd/es/button'));
+
+require('antd/es/row/style');
+
+var _row = _interopRequireDefault(require('antd/es/row'));
+
+require('antd/es/form/style');
+
+var _form = _interopRequireDefault(require('antd/es/form'));
+
+require('antd/es/select/style');
+
+var _select = _interopRequireDefault(require('antd/es/select'));
+
+require('antd/es/radio/style');
+
+var _radio = _interopRequireDefault(require('antd/es/radio'));
+
+require('antd/es/checkbox/style');
+
+var _checkbox = _interopRequireDefault(require('antd/es/checkbox'));
+
+require('antd/es/input/style');
+
+var _input = _interopRequireDefault(require('antd/es/input'));
+
+var _react = _interopRequireDefault(require('react'));
 
 var _lodash = require('lodash');
 
@@ -96,19 +126,19 @@ function _objectWithoutPropertiesLoose(source, excluded) {
 var selectFormElement = function selectFormElement(type) {
   switch (type) {
     case 'input':
-      return _antd.Input;
+      return _input['default'];
 
     case 'textarea':
-      return _antd.Input.TextArea;
+      return _input['default'].TextArea;
 
     case 'password':
-      return _antd.Input.Password;
+      return _input['default'].Password;
 
     case 'checkbox':
-      return _antd.Checkbox.Group;
+      return _checkbox['default'].Group;
 
     case 'radio':
-      return _antd.Radio.Group;
+      return _radio['default'].Group;
 
     default:
       return null;
@@ -127,7 +157,7 @@ var FormItemRenderer = function FormItemRenderer(_ref) {
 
   if (type === 'select') {
     return _react['default'].createElement(
-      _antd.Form.Item,
+      _form['default'].Item,
       {
         label: label,
         help: fieldProps.help || '',
@@ -139,12 +169,12 @@ var FormItemRenderer = function FormItemRenderer(_ref) {
         })
       )(
         _react['default'].createElement(
-          _antd.Select,
+          _select['default'],
           fieldProps,
           fieldProps.options &&
             fieldProps.options.map(function(item) {
               return _react['default'].createElement(
-                _antd.Select.Option,
+                _select['default'].Option,
                 {
                   key: item.value,
                   value: item.value,
@@ -159,7 +189,7 @@ var FormItemRenderer = function FormItemRenderer(_ref) {
 
   if (type === 'confirm') {
     return _react['default'].createElement(
-      _antd.Form.Item,
+      _form['default'].Item,
       {
         label: '',
         help: fieldProps.help || '',
@@ -169,14 +199,14 @@ var FormItemRenderer = function FormItemRenderer(_ref) {
         _objectSpread({}, fieldProps, {
           initialValue: initialValue || false,
         })
-      )(_react['default'].createElement(_antd.Checkbox, null, label))
+      )(_react['default'].createElement(_checkbox['default'], null, label))
     );
   } // Others
 
   var FormElement = selectFormElement(type);
   if (!FormElement) return null;
   return _react['default'].createElement(
-    _antd.Form.Item,
+    _form['default'].Item,
     {
       labelAlign: fieldProps.labelAlign || 'left',
       label: label,
@@ -229,25 +259,25 @@ var FormRenderer = function FormRenderer(_ref2) {
     initialValue: type || '',
   });
   return _react['default'].createElement(
-    _antd.Col,
+    _col['default'],
     null,
     _react['default'].createElement(
-      _antd.Row,
+      _row['default'],
       null,
       name &&
         _react['default'].createElement(
-          _antd.Row,
+          _row['default'],
           null,
           _react['default'].createElement('h2', null, name)
         ),
       description &&
         _react['default'].createElement(
-          _antd.Row,
+          _row['default'],
           null,
           _react['default'].createElement('p', null, description)
         ),
       _react['default'].createElement(
-        _antd.Form,
+        _form['default'],
         {
           onSubmit: handleSubmit,
           colon: colon,
@@ -255,7 +285,7 @@ var FormRenderer = function FormRenderer(_ref2) {
         !(0, _lodash.isEmpty)(schema) &&
           schema.map(function(fieldItem, index) {
             return _react['default'].createElement(
-              _antd.Row,
+              _row['default'],
               {
                 key: index,
               },
@@ -271,7 +301,7 @@ var FormRenderer = function FormRenderer(_ref2) {
             'div',
             null,
             _react['default'].createElement(
-              _antd.Button,
+              _button['default'],
               {
                 htmlType: 'submit',
               },
@@ -283,6 +313,6 @@ var FormRenderer = function FormRenderer(_ref2) {
   );
 };
 
-var _default = _antd.Form.create('form_renderer')(FormRenderer);
+var _default = _form['default'].create('form_renderer')(FormRenderer);
 
 exports['default'] = _default;
