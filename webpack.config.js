@@ -1,11 +1,5 @@
 const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
-// const webpack = require('webpack');
-
-// new webpack.NormalModuleReplacementPlugin(
-//   /node_modules\/antd\/lib\/style\/index\.less/,
-//   path.join(__dirname, 'src/style.less')
-// );
 
 const htmlWebpackPlugin = new HtmlWebpackPlugin({
   template: path.join(__dirname, 'example/src/index.html'),

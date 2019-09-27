@@ -20,8 +20,6 @@ var _FormBuilder = _interopRequireDefault(require('./FormBuilder'));
 
 var _FormRenderer = _interopRequireDefault(require('./FormRenderer'));
 
-require('./style.less');
-
 function _interopRequireDefault(obj) {
   return obj && obj.__esModule ? obj : { default: obj };
 }
