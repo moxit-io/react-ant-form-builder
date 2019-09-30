@@ -37,12 +37,119 @@ require('antd/es/input/style');
 
 var _input = _interopRequireDefault(require('antd/es/input'));
 
-var _react = _interopRequireDefault(require('react'));
+var _react = _interopRequireWildcard(require('react'));
 
 var _lodash = require('lodash');
 
+function _getRequireWildcardCache() {
+  if (typeof WeakMap !== 'function') return null;
+  var cache = new WeakMap();
+  _getRequireWildcardCache = function _getRequireWildcardCache() {
+    return cache;
+  };
+  return cache;
+}
+
+function _interopRequireWildcard(obj) {
+  if (obj && obj.__esModule) {
+    return obj;
+  }
+  var cache = _getRequireWildcardCache();
+  if (cache && cache.has(obj)) {
+    return cache.get(obj);
+  }
+  var newObj = {};
+  if (obj != null) {
+    var hasPropertyDescriptor =
+      Object.defineProperty && Object.getOwnPropertyDescriptor;
+    for (var key in obj) {
+      if (Object.prototype.hasOwnProperty.call(obj, key)) {
+        var desc = hasPropertyDescriptor
+          ? Object.getOwnPropertyDescriptor(obj, key)
+          : null;
+        if (desc && (desc.get || desc.set)) {
+          Object.defineProperty(newObj, key, desc);
+        } else {
+          newObj[key] = obj[key];
+        }
+      }
+    }
+  }
+  newObj['default'] = obj;
+  if (cache) {
+    cache.set(obj, newObj);
+  }
+  return newObj;
+}
+
 function _interopRequireDefault(obj) {
   return obj && obj.__esModule ? obj : { default: obj };
+}
+
+function _extends() {
+  _extends =
+    Object.assign ||
+    function(target) {
+      for (var i = 1; i < arguments.length; i++) {
+        var source = arguments[i];
+        for (var key in source) {
+          if (Object.prototype.hasOwnProperty.call(source, key)) {
+            target[key] = source[key];
+          }
+        }
+      }
+      return target;
+    };
+  return _extends.apply(this, arguments);
+}
+
+function _slicedToArray(arr, i) {
+  return (
+    _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _nonIterableRest()
+  );
+}
+
+function _nonIterableRest() {
+  throw new TypeError('Invalid attempt to destructure non-iterable instance');
+}
+
+function _iterableToArrayLimit(arr, i) {
+  if (
+    !(
+      Symbol.iterator in Object(arr) ||
+      Object.prototype.toString.call(arr) === '[object Arguments]'
+    )
+  ) {
+    return;
+  }
+  var _arr = [];
+  var _n = true;
+  var _d = false;
+  var _e = undefined;
+  try {
+    for (
+      var _i = arr[Symbol.iterator](), _s;
+      !(_n = (_s = _i.next()).done);
+      _n = true
+    ) {
+      _arr.push(_s.value);
+      if (i && _arr.length === i) break;
+    }
+  } catch (err) {
+    _d = true;
+    _e = err;
+  } finally {
+    try {
+      if (!_n && _i['return'] != null) _i['return']();
+    } finally {
+      if (_d) throw _e;
+    }
+  }
+  return _arr;
+}
+
+function _arrayWithHoles(arr) {
+  if (Array.isArray(arr)) return arr;
 }
 
 function ownKeys(object, enumerableOnly) {
@@ -122,6 +229,18 @@ function _objectWithoutPropertiesLoose(source, excluded) {
   }
   return target;
 }
+
+var isDraft = function isDraft(data) {
+  var draft = false;
+  if ((0, _lodash.isEmpty)(data)) draft = true;
+  if (
+    !(0, _lodash.isEmpty)(data) &&
+    (data.draft !== undefined || data.draft !== null) &&
+    data.draft
+  )
+    draft = true;
+  return draft;
+};
 
 var selectFormElement = function selectFormElement(type) {
   switch (type) {
@@ -238,13 +357,25 @@ var FormRenderer = function FormRenderer(_ref2) {
     type = _ref2$formStructure.type,
     name = _ref2$formStructure.name,
     description = _ref2$formStructure.description,
-    schema = _ref2$formStructure.schema;
+    schema = _ref2$formStructure.schema,
+    formProps = _ref2.formProps,
+    _ref2$allowDraft = _ref2.allowDraft,
+    allowDraft = _ref2$allowDraft === void 0 ? false : _ref2$allowDraft;
+
+  var _useState = (0, _react.useState)(false),
+    _useState2 = _slicedToArray(_useState, 2),
+    draft = _useState2[0],
+    setDraft = _useState2[1];
 
   var handleSubmit = function handleSubmit(e) {
     e.preventDefault();
     validateFields(function(err, formData) {
       if (!err) {
-        if (onSave) onSave(formData);
+        if (onSave)
+          onSave({
+            formData: formData,
+            draft: draft,
+          });
       } else if (onError) onError(err);
     });
   };
@@ -259,29 +390,32 @@ var FormRenderer = function FormRenderer(_ref2) {
     initialValue: type || '',
   });
   return _react['default'].createElement(
-    _col['default'],
-    null,
+    _form['default'],
+    _extends(
+      {
+        onSubmit: handleSubmit,
+        colon: colon,
+      },
+      formProps
+    ),
     _react['default'].createElement(
-      _row['default'],
+      _col['default'],
       null,
-      name &&
-        _react['default'].createElement(
-          _row['default'],
-          null,
-          _react['default'].createElement('h2', null, name)
-        ),
-      description &&
-        _react['default'].createElement(
-          _row['default'],
-          null,
-          _react['default'].createElement('p', null, description)
-        ),
       _react['default'].createElement(
-        _form['default'],
-        {
-          onSubmit: handleSubmit,
-          colon: colon,
-        },
+        _row['default'],
+        null,
+        name &&
+          _react['default'].createElement(
+            _row['default'],
+            null,
+            _react['default'].createElement('h2', null, name)
+          ),
+        description &&
+          _react['default'].createElement(
+            _row['default'],
+            null,
+            _react['default'].createElement('p', null, description)
+          ),
         !(0, _lodash.isEmpty)(schema) &&
           schema.map(function(fieldItem, index) {
             return _react['default'].createElement(
@@ -298,14 +432,47 @@ var FormRenderer = function FormRenderer(_ref2) {
           }),
         !(0, _lodash.isEmpty)(schema) &&
           _react['default'].createElement(
-            'div',
-            null,
+            _row['default'],
+            {
+              gutter: 16,
+            },
+            allowDraft &&
+              isDraft(data) &&
+              _react['default'].createElement(
+                _col['default'],
+                {
+                  span: 12,
+                },
+                _react['default'].createElement(
+                  _button['default'],
+                  {
+                    onClick: function onClick() {
+                      return setDraft(true);
+                    },
+                    block: true,
+                    type: 'default',
+                    htmlType: 'submit',
+                  },
+                  'Save Draft'
+                )
+              ),
             _react['default'].createElement(
-              _button['default'],
+              _col['default'],
               {
-                htmlType: 'submit',
+                span: allowDraft && isDraft(data) ? 12 : 24,
               },
-              'Submit'
+              _react['default'].createElement(
+                _button['default'],
+                {
+                  onClick: function onClick() {
+                    return setDraft(false);
+                  },
+                  block: true,
+                  type: 'primary',
+                  htmlType: 'submit',
+                },
+                'Submit'
+              )
             )
           )
       )
@@ -313,6 +480,8 @@ var FormRenderer = function FormRenderer(_ref2) {
   );
 };
 
-var _default = _form['default'].create('form_renderer')(FormRenderer);
+var _default = _form['default'].create({
+  name: 'form_renderer',
+})(FormRenderer);
 
 exports['default'] = _default;

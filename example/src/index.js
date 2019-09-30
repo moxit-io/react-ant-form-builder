@@ -27,6 +27,7 @@ const App = () => {
         <Col span={10}>
           <h1>Renderer</h1>
           <FormRenderer
+            allowDraft
             formStructure={formSchema}
             data={data}
             onSave={changedData => {

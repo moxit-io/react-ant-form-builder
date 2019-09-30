@@ -1,6 +1,20 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Form, Input, Checkbox, Button, Radio, Select, Row, Col } from 'antd';
 import { isEmpty } from 'lodash';
+
+const isDraft = data => {
+  let draft = false;
+
+  if (isEmpty(data)) draft = true;
+
+  if (
+    !isEmpty(data) &&
+    (data.draft !== undefined || data.draft !== null) &&
+    data.draft
+  )
+    draft = true;
+  return draft;
+};
 
 const selectFormElement = type => {
   switch (type) {
@@ -77,12 +91,16 @@ const FormRenderer = ({
   onSave,
   onError,
   formStructure: { id, type, name, description, schema },
+  formProps,
+  allowDraft = false,
 }) => {
+  const [draft, setDraft] = useState(false);
+
   const handleSubmit = e => {
     e.preventDefault();
     validateFields((err, formData) => {
       if (!err) {
-        if (onSave) onSave(formData);
+        if (onSave) onSave({ formData, draft });
       } else if (onError) onError(err);
     });
   };
@@ -92,19 +110,19 @@ const FormRenderer = ({
   getFieldDecorator('type', { initialValue: type || '' });
 
   return (
-    <Col>
-      <Row>
-        {name && (
-          <Row>
-            <h2>{name}</h2>
-          </Row>
-        )}
-        {description && (
-          <Row>
-            <p>{description}</p>
-          </Row>
-        )}
-        <Form onSubmit={handleSubmit} colon={colon}>
+    <Form onSubmit={handleSubmit} colon={colon} {...formProps}>
+      <Col>
+        <Row>
+          {name && (
+            <Row>
+              <h2>{name}</h2>
+            </Row>
+          )}
+          {description && (
+            <Row>
+              <p>{description}</p>
+            </Row>
+          )}
           {!isEmpty(schema) &&
             schema.map((fieldItem, index) => (
               <Row key={index}>
@@ -116,14 +134,37 @@ const FormRenderer = ({
               </Row>
             ))}
           {!isEmpty(schema) && (
-            <div>
-              <Button htmlType="submit">Submit</Button>
-            </div>
+            <Row gutter={16}>
+              {allowDraft && isDraft(data) && (
+                <Col span={12}>
+                  <Button
+                    onClick={() => setDraft(true)}
+                    block
+                    type="default"
+                    htmlType="submit"
+                  >
+                    Save Draft
+                  </Button>
+                </Col>
+              )}
+              <Col span={allowDraft && isDraft(data) ? 12 : 24}>
+                <Button
+                  onClick={() => setDraft(false)}
+                  block
+                  type="primary"
+                  htmlType="submit"
+                >
+                  Submit
+                </Button>
+              </Col>
+            </Row>
           )}
-        </Form>
-      </Row>
-    </Col>
+        </Row>
+      </Col>
+    </Form>
   );
 };
 
-export default Form.create('form_renderer')(FormRenderer);
+export default Form.create({
+  name: 'form_renderer',
+})(FormRenderer);
