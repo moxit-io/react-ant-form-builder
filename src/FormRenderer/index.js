@@ -89,6 +89,7 @@ const FormRenderer = ({
   formStructure: { id, type, name, description, schema },
   formProps,
   allowDraft = false,
+  allowSubmit = true,
 }) => {
   const [draft, setDraft] = useState(false);
 
@@ -129,25 +130,38 @@ const FormRenderer = ({
                 />
               </Row>
             ))}
-          {!isEmpty(schema) && (
+          {!isEmpty(schema) && allowSubmit && (
             <Row gutter={16}>
               {allowDraft && isDraft(data) && (
-                <Col span={12}>
+                <Col
+                  style={{ marginBottom: 10 }}
+                  lg={{ span: allowDraft && isDraft(data) ? 12 : 24 }}
+                  md={{ span: allowDraft && isDraft(data) ? 12 : 24 }}
+                  sm={{ span: 24 }}
+                  xs={{ span: 24 }}
+                >
                   <Button
                     onClick={() => setDraft(true)}
                     block
-                    type="default"
+                    icon="edit"
                     htmlType="submit"
                   >
                     Save Draft
                   </Button>
                 </Col>
               )}
-              <Col span={allowDraft && isDraft(data) ? 12 : 24}>
+              <Col
+                style={{ marginBottom: 10 }}
+                lg={{ span: allowDraft && isDraft(data) ? 12 : 24 }}
+                md={{ span: allowDraft && isDraft(data) ? 12 : 24 }}
+                sm={{ span: 24 }}
+                xs={{ span: 24 }}
+              >
                 <Button
                   onClick={() => setDraft(false)}
                   block
                   type="primary"
+                  icon="save"
                   htmlType="submit"
                 >
                   Submit

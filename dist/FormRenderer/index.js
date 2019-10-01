@@ -364,7 +364,9 @@ var FormRenderer = function FormRenderer(_ref2) {
     schema = _ref2$formStructure.schema,
     formProps = _ref2.formProps,
     _ref2$allowDraft = _ref2.allowDraft,
-    allowDraft = _ref2$allowDraft === void 0 ? false : _ref2$allowDraft;
+    allowDraft = _ref2$allowDraft === void 0 ? false : _ref2$allowDraft,
+    _ref2$allowSubmit = _ref2.allowSubmit,
+    allowSubmit = _ref2$allowSubmit === void 0 ? true : _ref2$allowSubmit;
 
   var _useState = (0, _react.useState)(false),
     _useState2 = _slicedToArray(_useState, 2),
@@ -435,6 +437,7 @@ var FormRenderer = function FormRenderer(_ref2) {
             );
           }),
         !(0, _lodash.isEmpty)(schema) &&
+          allowSubmit &&
           _react['default'].createElement(
             _row['default'],
             {
@@ -445,7 +448,21 @@ var FormRenderer = function FormRenderer(_ref2) {
               _react['default'].createElement(
                 _col['default'],
                 {
-                  span: 12,
+                  style: {
+                    marginBottom: 10,
+                  },
+                  lg: {
+                    span: allowDraft && isDraft(data) ? 12 : 24,
+                  },
+                  md: {
+                    span: allowDraft && isDraft(data) ? 12 : 24,
+                  },
+                  sm: {
+                    span: 24,
+                  },
+                  xs: {
+                    span: 24,
+                  },
                 },
                 _react['default'].createElement(
                   _button['default'],
@@ -454,7 +471,7 @@ var FormRenderer = function FormRenderer(_ref2) {
                       return setDraft(true);
                     },
                     block: true,
-                    type: 'default',
+                    icon: 'edit',
                     htmlType: 'submit',
                   },
                   'Save Draft'
@@ -463,7 +480,21 @@ var FormRenderer = function FormRenderer(_ref2) {
             _react['default'].createElement(
               _col['default'],
               {
-                span: allowDraft && isDraft(data) ? 12 : 24,
+                style: {
+                  marginBottom: 10,
+                },
+                lg: {
+                  span: allowDraft && isDraft(data) ? 12 : 24,
+                },
+                md: {
+                  span: allowDraft && isDraft(data) ? 12 : 24,
+                },
+                sm: {
+                  span: 24,
+                },
+                xs: {
+                  span: 24,
+                },
               },
               _react['default'].createElement(
                 _button['default'],
@@ -473,6 +504,7 @@ var FormRenderer = function FormRenderer(_ref2) {
                   },
                   block: true,
                   type: 'primary',
+                  icon: 'save',
                   htmlType: 'submit',
                 },
                 'Submit'
