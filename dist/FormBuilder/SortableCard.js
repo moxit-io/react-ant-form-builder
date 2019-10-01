@@ -254,7 +254,6 @@ var SortableCard = (0, _reactSortableHoc.SortableElement)(function(_ref) {
             },
             value && value.type === 'textarea'
               ? _react['default'].createElement(_input['default'].TextArea, {
-                  placeholder: 'Question',
                   value: value.label || '',
                   autosize: {
                     minRows: 2,
@@ -265,7 +264,6 @@ var SortableCard = (0, _reactSortableHoc.SortableElement)(function(_ref) {
                   },
                 })
               : _react['default'].createElement(_input['default'], {
-                  placeholder: 'Question',
                   value: value.label || '',
                   onChange: function onChange(e) {
                     handleChange('label', e.target.value);

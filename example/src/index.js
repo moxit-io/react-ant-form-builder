@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import ReactDOM from 'react-dom';
 
-import { Layout, Col, Row } from 'antd';
+import './example.css';
 
 // Components
 import FormBuilder from '../../src/FormBuilder';
@@ -12,32 +12,30 @@ const App = () => {
   const [data, setData] = useState({});
 
   return (
-    <Layout style={{ background: '#FFF' }}>
-      <Row gutter={16}>
-        <Col span={14}>
-          <h1>Builder</h1>
-          <FormBuilder
-            formStructure={formSchema}
-            onSave={schema => {
-              setFormSchema(schema);
-            }}
-            onError={error => console.log(error)}
-          />
-        </Col>
-        <Col span={10}>
-          <h1>Renderer</h1>
-          <FormRenderer
-            allowDraft
-            formStructure={formSchema}
-            data={data}
-            onSave={changedData => {
-              setData(changedData);
-            }}
-            onError={error => console.log(error)}
-          />
-        </Col>
-      </Row>
-    </Layout>
+    <div className="row">
+      <div className="column">
+        <h1>Builder</h1>
+        <FormBuilder
+          formStructure={formSchema}
+          onSave={schema => {
+            setFormSchema(schema);
+          }}
+          onError={error => console.log(error)}
+        />
+      </div>
+      <div className="column">
+        <h1>Renderer</h1>
+        <FormRenderer
+          allowDraft
+          formStructure={formSchema}
+          data={data}
+          onSave={changedData => {
+            setData(changedData);
+          }}
+          onError={error => console.log(error)}
+        />
+      </div>
+    </div>
   );
 };
 ReactDOM.render(<App />, document.getElementById('root'));

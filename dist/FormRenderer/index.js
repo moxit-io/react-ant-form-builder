@@ -270,14 +270,20 @@ var FormItemRenderer = function FormItemRenderer(_ref) {
   var label = formItem.label,
     field = formItem.field,
     type = formItem.type,
-    fieldProps = _objectWithoutProperties(formItem, ['label', 'field', 'type']); // Select list
+    help = formItem.help,
+    fieldProps = _objectWithoutProperties(formItem, [
+      'label',
+      'field',
+      'type',
+      'help',
+    ]); // Select list
 
   if (type === 'select') {
     return _react['default'].createElement(
       _form['default'].Item,
       {
         label: label,
-        help: fieldProps.help || '',
+        help: help,
       },
       decorator(
         field,
@@ -309,7 +315,7 @@ var FormItemRenderer = function FormItemRenderer(_ref) {
       _form['default'].Item,
       {
         label: '',
-        help: fieldProps.help || '',
+        help: help,
       },
       decorator(
         field,
@@ -327,7 +333,7 @@ var FormItemRenderer = function FormItemRenderer(_ref) {
     {
       labelAlign: fieldProps.labelAlign || 'left',
       label: label,
-      help: fieldProps.help || '',
+      help: help,
     },
     decorator(
       field,
@@ -387,7 +393,6 @@ var FormRenderer = function FormRenderer(_ref2) {
   getFieldDecorator('type', {
     initialValue: type || '',
   });
-  console.log(data);
   return _react['default'].createElement(
     _form['default'],
     _extends(

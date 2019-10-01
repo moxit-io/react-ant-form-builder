@@ -86,7 +86,6 @@ const SortableCard = SortableElement(
               <Form.Item required label="Question">
                 {value && value.type === 'textarea' ? (
                   <Input.TextArea
-                    placeholder="Question"
                     value={value.label || ''}
                     autosize={{ minRows: 2, maxRows: 6 }}
                     onChange={e => {
@@ -95,7 +94,6 @@ const SortableCard = SortableElement(
                   />
                 ) : (
                   <Input
-                    placeholder="Question"
                     value={value.label || ''}
                     onChange={e => {
                       handleChange('label', e.target.value);

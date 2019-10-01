@@ -30,11 +30,11 @@ const selectFormElement = type => {
 };
 
 export const FormItemRenderer = ({ formItem, decorator, initialValue }) => {
-  const { label, field, type, ...fieldProps } = formItem;
+  const { label, field, type, help, ...fieldProps } = formItem;
   // Select list
   if (type === 'select') {
     return (
-      <Form.Item label={label} help={fieldProps.help || ''}>
+      <Form.Item label={label} help={help}>
         {decorator(field, {
           ...fieldProps,
           initialValue: initialValue || [],
@@ -54,7 +54,7 @@ export const FormItemRenderer = ({ formItem, decorator, initialValue }) => {
   // Confirm checkbox
   if (type === 'confirm') {
     return (
-      <Form.Item label="" help={fieldProps.help || ''}>
+      <Form.Item label="" help={help}>
         {decorator(field, {
           ...fieldProps,
           initialValue: initialValue || false,
@@ -70,7 +70,7 @@ export const FormItemRenderer = ({ formItem, decorator, initialValue }) => {
     <Form.Item
       labelAlign={fieldProps.labelAlign || 'left'}
       label={label}
-      help={fieldProps.help || ''}
+      help={help}
     >
       {decorator(field, {
         ...fieldProps,
@@ -104,7 +104,7 @@ const FormRenderer = ({
   getFieldDecorator('id', { initialValue: data.id || '' });
   getFieldDecorator('formId', { initialValue: id || '' });
   getFieldDecorator('type', { initialValue: type || '' });
-  console.log(data);
+
   return (
     <Form onSubmit={handleSubmit} colon={colon} {...formProps}>
       <Col>
