@@ -3,17 +3,13 @@ import { Form, Input, Checkbox, Button, Radio, Select, Row, Col } from 'antd';
 import { isEmpty } from 'lodash';
 
 const isDraft = data => {
-  let draft = false;
-
-  if (isEmpty(data)) draft = true;
-
   if (
     !isEmpty(data) &&
     (data.draft !== undefined || data.draft !== null) &&
-    data.draft
+    !data.draft
   )
-    draft = true;
-  return draft;
+    return false;
+  return true;
 };
 
 const selectFormElement = type => {
@@ -108,7 +104,7 @@ const FormRenderer = ({
   getFieldDecorator('id', { initialValue: data.id || '' });
   getFieldDecorator('formId', { initialValue: id || '' });
   getFieldDecorator('type', { initialValue: type || '' });
-
+  console.log(data);
   return (
     <Form onSubmit={handleSubmit} colon={colon} {...formProps}>
       <Col>

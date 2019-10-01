@@ -231,15 +231,13 @@ function _objectWithoutPropertiesLoose(source, excluded) {
 }
 
 var isDraft = function isDraft(data) {
-  var draft = false;
-  if ((0, _lodash.isEmpty)(data)) draft = true;
   if (
     !(0, _lodash.isEmpty)(data) &&
     (data.draft !== undefined || data.draft !== null) &&
-    data.draft
+    !data.draft
   )
-    draft = true;
-  return draft;
+    return false;
+  return true;
 };
 
 var selectFormElement = function selectFormElement(type) {
@@ -389,6 +387,7 @@ var FormRenderer = function FormRenderer(_ref2) {
   getFieldDecorator('type', {
     initialValue: type || '',
   });
+  console.log(data);
   return _react['default'].createElement(
     _form['default'],
     _extends(
