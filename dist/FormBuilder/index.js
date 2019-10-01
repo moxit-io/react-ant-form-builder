@@ -208,7 +208,7 @@ var SortableSchema = (0, _reactSortableHoc.SortableContainer)(function(_ref2) {
 var emptyField = [
   {
     type: 'input',
-    placeholder: 'Add question',
+    placeholder: '',
     label: 'Question1',
     field: (0, _lodash.camelCase)('Question1'),
     rules: [
@@ -285,7 +285,7 @@ var SchemaList = _react['default'].forwardRef(function(_ref3, ref) {
               var updatedList = [].concat(_toConsumableArray(value), [
                 {
                   type: 'input',
-                  placeholder: 'Add question',
+                  placeholder: '',
                   label: 'Question'.concat(value.length + 1),
                   field: (0, _lodash.camelCase)(
                     'Question '.concat(value.length + 1)

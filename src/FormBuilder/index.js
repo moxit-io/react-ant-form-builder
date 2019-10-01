@@ -46,7 +46,7 @@ const SortableSchema = SortableContainer(({ items, header, onChange }) => {
 const emptyField = [
   {
     type: 'input',
-    placeholder: 'Add question',
+    placeholder: '',
     label: `Question1`,
     field: camelCase(`Question1`),
     rules: [{ required: false, message: 'Field is required' }],
@@ -83,7 +83,7 @@ const SchemaList = React.forwardRef(({ value, onChange, header }, ref) => {
                   ...value,
                   {
                     type: 'input',
-                    placeholder: 'Add question',
+                    placeholder: '',
                     label: `Question${value.length + 1}`,
                     field: camelCase(`Question ${value.length + 1}`),
                     rules: [{ required: false, message: 'Field is required' }],
