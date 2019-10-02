@@ -364,7 +364,7 @@ var FormRenderer = function FormRenderer(_ref2) {
     schema = _ref2$formStructure.schema,
     formProps = _ref2.formProps,
     _ref2$allowDraft = _ref2.allowDraft,
-    allowDraft = _ref2$allowDraft === void 0 ? false : _ref2$allowDraft,
+    allowDraft = _ref2$allowDraft === void 0 ? true : _ref2$allowDraft,
     _ref2$allowSubmit = _ref2.allowSubmit,
     allowSubmit = _ref2$allowSubmit === void 0 ? true : _ref2$allowSubmit;
 
@@ -444,7 +444,6 @@ var FormRenderer = function FormRenderer(_ref2) {
               gutter: 16,
             },
             allowDraft &&
-              isDraft(data) &&
               _react['default'].createElement(
                 _col['default'],
                 {
@@ -472,6 +471,7 @@ var FormRenderer = function FormRenderer(_ref2) {
                     },
                     block: true,
                     icon: 'edit',
+                    type: 'dashed',
                     htmlType: 'submit',
                   },
                   'Save Draft'

@@ -2,16 +2,6 @@ import React, { useState } from 'react';
 import { Form, Input, Checkbox, Button, Radio, Select, Row, Col } from 'antd';
 import { isEmpty } from 'lodash';
 
-const isDraft = data => {
-  if (
-    !isEmpty(data) &&
-    (data.draft !== undefined || data.draft !== null) &&
-    !data.draft
-  )
-    return false;
-  return true;
-};
-
 const selectFormElement = type => {
   switch (type) {
     case 'input':
@@ -88,7 +78,7 @@ const FormRenderer = ({
   onError,
   formStructure: { id, type, name, description, schema },
   formProps,
-  allowDraft = false,
+  allowDraft = true,
   allowSubmit = true,
 }) => {
   const [draft, setDraft] = useState(false);
@@ -132,11 +122,11 @@ const FormRenderer = ({
             ))}
           {!isEmpty(schema) && allowSubmit && (
             <Row gutter={16}>
-              {allowDraft && isDraft(data) && (
+              {allowDraft && (
                 <Col
                   style={{ marginBottom: 10 }}
-                  lg={{ span: allowDraft && isDraft(data) ? 12 : 24 }}
-                  md={{ span: allowDraft && isDraft(data) ? 12 : 24 }}
+                  lg={{ span: allowDraft ? 12 : 24 }}
+                  md={{ span: allowDraft ? 12 : 24 }}
                   sm={{ span: 24 }}
                   xs={{ span: 24 }}
                 >
@@ -144,6 +134,7 @@ const FormRenderer = ({
                     onClick={() => setDraft(true)}
                     block
                     icon="edit"
+                    type="dashed"
                     htmlType="submit"
                   >
                     Save Draft
@@ -152,8 +143,8 @@ const FormRenderer = ({
               )}
               <Col
                 style={{ marginBottom: 10 }}
-                lg={{ span: allowDraft && isDraft(data) ? 12 : 24 }}
-                md={{ span: allowDraft && isDraft(data) ? 12 : 24 }}
+                lg={{ span: allowDraft ? 12 : 24 }}
+                md={{ span: allowDraft ? 12 : 24 }}
                 sm={{ span: 24 }}
                 xs={{ span: 24 }}
               >
