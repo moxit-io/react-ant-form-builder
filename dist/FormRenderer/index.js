@@ -230,16 +230,6 @@ function _objectWithoutPropertiesLoose(source, excluded) {
   return target;
 }
 
-var isDraft = function isDraft(data) {
-  if (
-    !(0, _lodash.isEmpty)(data) &&
-    (data.draft !== undefined || data.draft !== null) &&
-    !data.draft
-  )
-    return false;
-  return true;
-};
-
 var selectFormElement = function selectFormElement(type) {
   switch (type) {
     case 'input':
@@ -366,7 +356,9 @@ var FormRenderer = function FormRenderer(_ref2) {
     _ref2$allowDraft = _ref2.allowDraft,
     allowDraft = _ref2$allowDraft === void 0 ? true : _ref2$allowDraft,
     _ref2$allowSubmit = _ref2.allowSubmit,
-    allowSubmit = _ref2$allowSubmit === void 0 ? true : _ref2$allowSubmit;
+    allowSubmit = _ref2$allowSubmit === void 0 ? true : _ref2$allowSubmit,
+    _ref2$disabled = _ref2.disabled,
+    disabled = _ref2$disabled === void 0 ? false : _ref2$disabled;
 
   var _useState = (0, _react.useState)(false),
     _useState2 = _slicedToArray(_useState, 2),
@@ -422,20 +414,26 @@ var FormRenderer = function FormRenderer(_ref2) {
             null,
             _react['default'].createElement('p', null, description)
           ),
-        !(0, _lodash.isEmpty)(schema) &&
-          schema.map(function(fieldItem, index) {
-            return _react['default'].createElement(
-              _row['default'],
-              {
-                key: index,
-              },
-              _react['default'].createElement(FormItemRenderer, {
-                formItem: fieldItem,
-                decorator: getFieldDecorator,
-                initialValue: data[fieldItem.field],
-              })
-            );
-          }),
+        _react['default'].createElement(
+          'fieldset',
+          {
+            disabled: disabled,
+          },
+          !(0, _lodash.isEmpty)(schema) &&
+            schema.map(function(fieldItem, index) {
+              return _react['default'].createElement(
+                _row['default'],
+                {
+                  key: index,
+                },
+                _react['default'].createElement(FormItemRenderer, {
+                  formItem: fieldItem,
+                  decorator: getFieldDecorator,
+                  initialValue: data[fieldItem.field],
+                })
+              );
+            })
+        ),
         !(0, _lodash.isEmpty)(schema) &&
           allowSubmit &&
           _react['default'].createElement(
@@ -451,10 +449,10 @@ var FormRenderer = function FormRenderer(_ref2) {
                     marginBottom: 10,
                   },
                   lg: {
-                    span: allowDraft && isDraft(data) ? 12 : 24,
+                    span: allowDraft ? 12 : 24,
                   },
                   md: {
-                    span: allowDraft && isDraft(data) ? 12 : 24,
+                    span: allowDraft ? 12 : 24,
                   },
                   sm: {
                     span: 24,
@@ -484,10 +482,10 @@ var FormRenderer = function FormRenderer(_ref2) {
                   marginBottom: 10,
                 },
                 lg: {
-                  span: allowDraft && isDraft(data) ? 12 : 24,
+                  span: allowDraft ? 12 : 24,
                 },
                 md: {
-                  span: allowDraft && isDraft(data) ? 12 : 24,
+                  span: allowDraft ? 12 : 24,
                 },
                 sm: {
                   span: 24,
