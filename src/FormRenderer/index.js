@@ -80,6 +80,7 @@ const FormRenderer = ({
   formProps,
   allowDraft = true,
   allowSubmit = true,
+  disabled = false,
 }) => {
   const [draft, setDraft] = useState(false);
 
@@ -110,16 +111,18 @@ const FormRenderer = ({
               <p>{description}</p>
             </Row>
           )}
-          {!isEmpty(schema) &&
-            schema.map((fieldItem, index) => (
-              <Row key={index}>
-                <FormItemRenderer
-                  formItem={fieldItem}
-                  decorator={getFieldDecorator}
-                  initialValue={data[fieldItem.field]}
-                />
-              </Row>
-            ))}
+          <fieldset disabled={disabled}>
+            {!isEmpty(schema) &&
+              schema.map((fieldItem, index) => (
+                <Row key={index}>
+                  <FormItemRenderer
+                    formItem={fieldItem}
+                    decorator={getFieldDecorator}
+                    initialValue={data[fieldItem.field]}
+                  />
+                </Row>
+              ))}
+          </fieldset>
           {!isEmpty(schema) && allowSubmit && (
             <Row gutter={16}>
               {allowDraft && (
