@@ -116,7 +116,7 @@ const SortableCard = SortableElement(
                     onSelect={selected => {
                       // On change, reset.
                       const newField = {
-                        label: `Question${items.length}`,
+                        label: value.label || `Question${items.length}`,
                         field: camelCase(`Question ${items.length}`),
                         type: selected,
                         rules: [

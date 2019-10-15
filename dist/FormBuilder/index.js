@@ -13,17 +13,13 @@ require('antd/es/input/style');
 
 var _input = _interopRequireDefault(require('antd/es/input'));
 
-require('antd/es/affix/style');
+require('antd/es/col/style');
 
-var _affix = _interopRequireDefault(require('antd/es/affix'));
+var _col = _interopRequireDefault(require('antd/es/col'));
 
 require('antd/es/button/style');
 
 var _button = _interopRequireDefault(require('antd/es/button'));
-
-require('antd/es/col/style');
-
-var _col = _interopRequireDefault(require('antd/es/col'));
 
 require('antd/es/row/style');
 
@@ -33,7 +29,7 @@ require('antd/es/list/style');
 
 var _list = _interopRequireDefault(require('antd/es/list'));
 
-var _react = _interopRequireWildcard(require('react'));
+var _react = _interopRequireDefault(require('react'));
 
 var _lodash = require('lodash');
 
@@ -42,47 +38,6 @@ var _arrayMove = _interopRequireDefault(require('array-move'));
 var _reactSortableHoc = require('react-sortable-hoc');
 
 var _SortableCard = _interopRequireDefault(require('./SortableCard'));
-
-function _getRequireWildcardCache() {
-  if (typeof WeakMap !== 'function') return null;
-  var cache = new WeakMap();
-  _getRequireWildcardCache = function _getRequireWildcardCache() {
-    return cache;
-  };
-  return cache;
-}
-
-function _interopRequireWildcard(obj) {
-  if (obj && obj.__esModule) {
-    return obj;
-  }
-  var cache = _getRequireWildcardCache();
-  if (cache && cache.has(obj)) {
-    return cache.get(obj);
-  }
-  var newObj = {};
-  if (obj != null) {
-    var hasPropertyDescriptor =
-      Object.defineProperty && Object.getOwnPropertyDescriptor;
-    for (var key in obj) {
-      if (Object.prototype.hasOwnProperty.call(obj, key)) {
-        var desc = hasPropertyDescriptor
-          ? Object.getOwnPropertyDescriptor(obj, key)
-          : null;
-        if (desc && (desc.get || desc.set)) {
-          Object.defineProperty(newObj, key, desc);
-        } else {
-          newObj[key] = obj[key];
-        }
-      }
-    }
-  }
-  newObj['default'] = obj;
-  if (cache) {
-    cache.set(obj, newObj);
-  }
-  return newObj;
-}
 
 function _interopRequireDefault(obj) {
   return obj && obj.__esModule ? obj : { default: obj };
@@ -224,8 +179,8 @@ var SchemaList = _react['default'].forwardRef(function(_ref3, ref) {
   var value = _ref3.value,
     onChange = _ref3.onChange,
     header = _ref3.header;
-  var bottomRef = (0, _react.useRef)(null);
 
+  // const bottomRef = useRef(null);
   var handleChange = function handleChange(change) {
     return onChange(change);
   };
@@ -236,7 +191,7 @@ var SchemaList = _react['default'].forwardRef(function(_ref3, ref) {
     _react['default'].createElement(
       _col['default'],
       {
-        span: 22,
+        // span={22}
         ref: ref,
       },
       _react['default'].createElement(
@@ -263,24 +218,20 @@ var SchemaList = _react['default'].forwardRef(function(_ref3, ref) {
             handleChange(updatedSchema);
           },
         })
-      )
-    ),
-    _react['default'].createElement(
-      _col['default'],
-      null,
+      ),
       _react['default'].createElement(
         _row['default'],
-        {
-          type: 'flex',
-          justify: 'center',
-        },
+        null,
         _react['default'].createElement(
-          _affix['default'],
+          _button['default'],
           {
-            offsetTop: 400,
-          },
-          _react['default'].createElement(_button['default'], {
+            style: {
+              marginTop: 10,
+            },
+            type: 'primary',
             icon: 'plus',
+            title: 'Add new',
+            block: true,
             onClick: function onClick() {
               var updatedList = [].concat(_toConsumableArray(value), [
                 {
@@ -299,15 +250,10 @@ var SchemaList = _react['default'].forwardRef(function(_ref3, ref) {
                 },
               ]);
               handleChange(updatedList);
-              setTimeout(function() {
-                if (bottomRef.current) window.scrollTo(0, ref);
-              }, 200);
             },
-          })
-        ),
-        _react['default'].createElement('div', {
-          ref: bottomRef,
-        })
+          },
+          'Add new question'
+        )
       )
     )
   );

@@ -1,5 +1,5 @@
-import React, { useRef } from 'react';
-import { Form, Row, Button, Input, List, Affix, Col } from 'antd';
+import React from 'react';
+import { Form, Row, Button, Input, List, Col } from 'antd';
 import { camelCase, isEmpty } from 'lodash';
 import arrayMove from 'array-move';
 import { SortableContainer } from 'react-sortable-hoc';
@@ -54,11 +54,14 @@ const emptyField = [
 ];
 
 const SchemaList = React.forwardRef(({ value, onChange, header }, ref) => {
-  const bottomRef = useRef(null);
+  // const bottomRef = useRef(null);
   const handleChange = change => onChange(change);
   return (
     <Row>
-      <Col span={22} ref={ref}>
+      <Col
+        // span={22}
+        ref={ref}
+      >
         <Row style={{ background: '#ECECEC' }}>
           <SortableSchema
             items={value}
@@ -72,12 +75,37 @@ const SchemaList = React.forwardRef(({ value, onChange, header }, ref) => {
             }}
           />
         </Row>
+        <Row>
+          <Button
+            style={{ marginTop: 10 }}
+            type="primary"
+            icon="plus"
+            title="Add new"
+            block
+            onClick={() => {
+              const updatedList = [
+                ...value,
+                {
+                  type: 'input',
+                  placeholder: '',
+                  label: `Question${value.length + 1}`,
+                  field: camelCase(`Question ${value.length + 1}`),
+                  rules: [{ required: false, message: 'Field is required' }],
+                },
+              ];
+              handleChange(updatedList);
+            }}
+          >
+            Add new question
+          </Button>
+        </Row>
       </Col>
-      <Col>
+      {/* <Col>
         <Row type="flex" justify="center">
           <Affix offsetTop={400}>
             <Button
               icon="plus"
+              type="primary"
               onClick={() => {
                 const updatedList = [
                   ...value,
@@ -98,7 +126,7 @@ const SchemaList = React.forwardRef(({ value, onChange, header }, ref) => {
           </Affix>
           <div ref={bottomRef} />
         </Row>
-      </Col>
+      </Col> */}
     </Row>
   );
 });

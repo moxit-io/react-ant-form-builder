@@ -303,7 +303,7 @@ var SortableCard = (0, _reactSortableHoc.SortableElement)(function(_ref) {
                   onSelect: function onSelect(selected) {
                     // On change, reset.
                     var newField = {
-                      label: 'Question'.concat(items.length),
+                      label: value.label || 'Question'.concat(items.length),
                       field: (0, _lodash.camelCase)(
                         'Question '.concat(items.length)
                       ),
