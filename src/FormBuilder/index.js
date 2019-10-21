@@ -133,6 +133,7 @@ const SchemaList = React.forwardRef(({ value, onChange, header }, ref) => {
 
 const FormBuilder = ({
   onSave,
+  noSave = false,
   onError,
   formStructure = {},
   form: { getFieldDecorator, validateFields },
@@ -183,10 +184,17 @@ const FormBuilder = ({
           margin: '30 0',
         }}
       >
-        <Button htmlType="submit">Save</Button>
+        {!noSave && <Button htmlType="submit">Save</Button>}
       </div>
     </Form>
   );
 };
 
-export default Form.create('form_builder')(FormBuilder);
+export default Form.create({
+  name: 'form_builder',
+  onFieldsChange(props) {
+    if (props.noSave) {
+      props.onSave(props.form.getFieldsValue());
+    }
+  },
+})(FormBuilder);

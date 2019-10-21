@@ -17,8 +17,10 @@ const App = () => {
         <h1>Builder</h1>
         <FormBuilder
           formStructure={formSchema}
+          noSave
           onSave={schema => {
             setFormSchema(schema);
+            console.log(schema);
           }}
           onError={error => console.log(error)}
         />
