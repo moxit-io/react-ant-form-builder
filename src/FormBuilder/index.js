@@ -153,7 +153,19 @@ const FormBuilder = ({
     getFieldDecorator('type', { initialValue: formStructure.type });
 
   return (
-    <Form colon={false} onSubmit={handleSubmit} noValidate>
+    <Form
+      onKeyPress={e => {
+        console.log(e);
+        if (e.key === 'Enter') {
+          e.preventDefault();
+          return false;
+        }
+        return true;
+      }}
+      colon={false}
+      onSubmit={handleSubmit}
+      noValidate
+    >
       <Form.Item label="Name">
         {getFieldDecorator('name', {
           initialValue: formStructure.name || '',

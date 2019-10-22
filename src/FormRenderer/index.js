@@ -47,6 +47,7 @@ export const FormItemRenderer = ({ formItem, decorator, initialValue }) => {
       <Form.Item label="" help={help}>
         {decorator(field, {
           ...fieldProps,
+          valuePropName: 'checked',
           initialValue: initialValue || false,
         })(<Checkbox>{label}</Checkbox>)}
       </Form.Item>
