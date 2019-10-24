@@ -1,7 +1,7 @@
 import React from 'react';
 import { SortableElement, sortableHandle } from 'react-sortable-hoc';
 import { Card, Switch, Row, Icon, Input, Form, Col, Select } from 'antd';
-import { find, camelCase } from 'lodash';
+import { find } from 'lodash';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
   faTextWidth,
@@ -33,11 +33,11 @@ const SortableCard = SortableElement(
       // Updated schema with changes.
       const allFields = items;
       // Update specific property.
-      if (field && change) {
+      if (field) {
         allFields[index] = { ...value, [field]: change };
       } else {
         // replace property
-        allFields[index] = change;
+        allFields[index] = { ...change, field: value.field };
       }
       if (onChange) onChange(allFields);
     };
@@ -86,6 +86,7 @@ const SortableCard = SortableElement(
               <Form.Item required label="Question">
                 {value && value.type === 'textarea' ? (
                   <Input.TextArea
+                    placeholder="Add Question Here"
                     value={value.label || ''}
                     autosize={{ minRows: 2, maxRows: 6 }}
                     onChange={e => {
@@ -95,6 +96,7 @@ const SortableCard = SortableElement(
                 ) : (
                   <Input
                     value={value.label || ''}
+                    placeholder="Add Question Here"
                     onChange={e => {
                       handleChange('label', e.target.value);
                     }}
@@ -116,8 +118,9 @@ const SortableCard = SortableElement(
                     onSelect={selected => {
                       // On change, reset.
                       const newField = {
-                        label: value.label || `Question${items.length}`,
-                        field: camelCase(`Question ${items.length}`),
+                        label: value.label || ``,
+                        placeholder: 'Add Question Here',
+                        field: value.field,
                         type: selected,
                         rules: [
                           { required: false, message: 'Field is required' },

@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Form, Input, Checkbox, Button, Radio, Select, Row, Col } from 'antd';
-import { isEmpty } from 'lodash';
+import { isEmpty, omit } from 'lodash';
 
 const selectFormElement = type => {
   switch (type) {
@@ -20,7 +20,8 @@ const selectFormElement = type => {
 };
 
 export const FormItemRenderer = ({ formItem, decorator, initialValue }) => {
-  const { label, field, type, help, ...fieldProps } = formItem;
+  const { label, field, type, help, ...allProps } = formItem;
+  const fieldProps = omit(allProps, 'placeholder');
   // Select list
   if (type === 'select') {
     return (

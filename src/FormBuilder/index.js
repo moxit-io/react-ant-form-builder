@@ -47,7 +47,7 @@ const emptyField = [
   {
     type: 'input',
     placeholder: '',
-    label: `Question1`,
+    label: ``,
     field: camelCase(`Question1`),
     rules: [{ required: false, message: 'Field is required' }],
   },
@@ -87,8 +87,7 @@ const SchemaList = React.forwardRef(({ value, onChange, header }, ref) => {
                 ...value,
                 {
                   type: 'input',
-                  placeholder: '',
-                  label: `Question${value.length + 1}`,
+                  label: ``,
                   field: camelCase(`Question ${value.length + 1}`),
                   rules: [{ required: false, message: 'Field is required' }],
                 },
@@ -206,7 +205,11 @@ export default Form.create({
   name: 'form_builder',
   onFieldsChange(props) {
     if (props.noSave) {
-      props.onSave(props.form.getFieldsValue());
+      props.form.validateFields((err, formData) => {
+        if (!err) {
+          if (props.onSave) props.onSave(formData);
+        } else if (props.onError) props.onError(err);
+      });
     }
   },
 })(FormBuilder);
