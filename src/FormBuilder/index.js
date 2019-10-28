@@ -1,5 +1,5 @@
-import React from 'react';
-import { Form, Row, Button, Input, List, Col } from 'antd';
+import React, { useState } from 'react';
+import { Form, Row, Button, Input, List, Col, Alert } from 'antd';
 import { camelCase, isEmpty } from 'lodash';
 import arrayMove from 'array-move';
 import { SortableContainer } from 'react-sortable-hoc';
@@ -52,6 +52,14 @@ const emptyField = [
     rules: [{ required: false, message: 'Field is required' }],
   },
 ];
+
+const checkLabels = items => {
+  const notValid = items.filter(
+    item => item.label === '' || item.label === undefined || item.label === null
+  );
+
+  return notValid.length === 0;
+};
 
 const SchemaList = React.forwardRef(({ value, onChange, header }, ref) => {
   // const bottomRef = useRef(null);
@@ -136,13 +144,22 @@ const FormBuilder = ({
   onError,
   formStructure = {},
   form: { getFieldDecorator, validateFields },
+  formId = null,
 }) => {
+  const [errors, setErrors] = useState([]);
+
   const handleSubmit = e => {
+    setErrors([]);
+    console.log(e);
     e.preventDefault();
     validateFields((err, formData) => {
+      console.log(err);
       if (!err) {
         if (onSave) onSave(formData);
-      } else if (onError) onError(err);
+      } else if (onError) {
+        setErrors(err.schema.errors);
+        onError(err);
+      }
     });
   };
 
@@ -152,64 +169,84 @@ const FormBuilder = ({
     getFieldDecorator('type', { initialValue: formStructure.type });
 
   return (
-    <Form
-      onKeyPress={e => {
-        console.log(e);
-        if (e.key === 'Enter') {
-          e.preventDefault();
-          return false;
-        }
-        return true;
-      }}
-      colon={false}
-      onSubmit={handleSubmit}
-      noValidate
-    >
-      <Form.Item label="Name">
-        {getFieldDecorator('name', {
-          initialValue: formStructure.name || '',
-        })(<Input placeholder="Add form name" />)}
-      </Form.Item>
-      <Form.Item label="Description">
-        {getFieldDecorator('description', {
-          initialValue: formStructure.description || '',
-        })(
-          <Input.TextArea
-            placeholder="Add form description"
-            autosize={{ minRows: 2, maxRows: 6 }}
-          />
-        )}
-      </Form.Item>
-      <Row>
-        <Form.Item>
-          {getFieldDecorator('schema', {
-            initialValue: !isEmpty(formStructure.schema)
-              ? formStructure.schema
-              : emptyField,
-          })(<SchemaList />)}
-        </Form.Item>
-      </Row>
-
-      <div
-        style={{
-          margin: '30 0',
+    <>
+      {errors.length > 0 && (
+        <Alert
+          type="error"
+          message="Error"
+          showIcon
+          description={
+            // eslint-disable-next-line react/jsx-wrap-multilines
+            <ul>
+              {errors.map((error, index) => (
+                <li key={index}>{error.message}</li>
+              ))}
+            </ul>
+          }
+        />
+      )}
+      <Form
+        onKeyPress={e => {
+          if (e.key === 'Enter') {
+            e.preventDefault();
+            return false;
+          }
+          return true;
         }}
+        colon={false}
+        onSubmit={handleSubmit}
+        noValidate
+        id={formId}
       >
-        {!noSave && <Button htmlType="submit">Save</Button>}
-      </div>
-    </Form>
+        <Form.Item label="Name">
+          {getFieldDecorator('name', {
+            initialValue: formStructure.name || '',
+          })(<Input placeholder="Add form name" />)}
+        </Form.Item>
+        <Form.Item label="Description">
+          {getFieldDecorator('description', {
+            initialValue: formStructure.description || '',
+          })(
+            <Input.TextArea
+              placeholder="Add form description"
+              autosize={{ minRows: 2, maxRows: 6 }}
+            />
+          )}
+        </Form.Item>
+        <Row>
+          <Form.Item validateStatus={null} help={null}>
+            {getFieldDecorator('schema', {
+              initialValue: !isEmpty(formStructure.schema)
+                ? formStructure.schema
+                : emptyField,
+              rules: [
+                {
+                  validator: (rule, value, callback) => {
+                    if (!checkLabels(value)) {
+                      callback(
+                        'Please provide questions. All questions are required.'
+                      );
+                    }
+                    callback();
+                  },
+                },
+              ],
+            })(<SchemaList />)}
+          </Form.Item>
+        </Row>
+
+        <div
+          style={{
+            margin: '30 0',
+          }}
+        >
+          {!noSave && <Button htmlType="submit">Save</Button>}
+        </div>
+      </Form>
+    </>
   );
 };
 
 export default Form.create({
   name: 'form_builder',
-  onFieldsChange(props) {
-    if (props.noSave) {
-      props.form.validateFields((err, formData) => {
-        if (!err) {
-          if (props.onSave) props.onSave(formData);
-        } else if (props.onError) props.onError(err);
-      });
-    }
-  },
 })(FormBuilder);
