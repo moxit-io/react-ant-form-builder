@@ -13,6 +13,10 @@ require('antd/es/input/style');
 
 var _input = _interopRequireDefault(require('antd/es/input'));
 
+require('antd/es/alert/style');
+
+var _alert = _interopRequireDefault(require('antd/es/alert'));
+
 require('antd/es/col/style');
 
 var _col = _interopRequireDefault(require('antd/es/col'));
@@ -29,7 +33,7 @@ require('antd/es/list/style');
 
 var _list = _interopRequireDefault(require('antd/es/list'));
 
-var _react = _interopRequireDefault(require('react'));
+var _react = _interopRequireWildcard(require('react'));
 
 var _lodash = require('lodash');
 
@@ -39,8 +43,98 @@ var _reactSortableHoc = require('react-sortable-hoc');
 
 var _SortableCard = _interopRequireDefault(require('./SortableCard'));
 
+function _getRequireWildcardCache() {
+  if (typeof WeakMap !== 'function') return null;
+  var cache = new WeakMap();
+  _getRequireWildcardCache = function _getRequireWildcardCache() {
+    return cache;
+  };
+  return cache;
+}
+
+function _interopRequireWildcard(obj) {
+  if (obj && obj.__esModule) {
+    return obj;
+  }
+  var cache = _getRequireWildcardCache();
+  if (cache && cache.has(obj)) {
+    return cache.get(obj);
+  }
+  var newObj = {};
+  if (obj != null) {
+    var hasPropertyDescriptor =
+      Object.defineProperty && Object.getOwnPropertyDescriptor;
+    for (var key in obj) {
+      if (Object.prototype.hasOwnProperty.call(obj, key)) {
+        var desc = hasPropertyDescriptor
+          ? Object.getOwnPropertyDescriptor(obj, key)
+          : null;
+        if (desc && (desc.get || desc.set)) {
+          Object.defineProperty(newObj, key, desc);
+        } else {
+          newObj[key] = obj[key];
+        }
+      }
+    }
+  }
+  newObj['default'] = obj;
+  if (cache) {
+    cache.set(obj, newObj);
+  }
+  return newObj;
+}
+
 function _interopRequireDefault(obj) {
   return obj && obj.__esModule ? obj : { default: obj };
+}
+
+function _slicedToArray(arr, i) {
+  return (
+    _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _nonIterableRest()
+  );
+}
+
+function _nonIterableRest() {
+  throw new TypeError('Invalid attempt to destructure non-iterable instance');
+}
+
+function _iterableToArrayLimit(arr, i) {
+  if (
+    !(
+      Symbol.iterator in Object(arr) ||
+      Object.prototype.toString.call(arr) === '[object Arguments]'
+    )
+  ) {
+    return;
+  }
+  var _arr = [];
+  var _n = true;
+  var _d = false;
+  var _e = undefined;
+  try {
+    for (
+      var _i = arr[Symbol.iterator](), _s;
+      !(_n = (_s = _i.next()).done);
+      _n = true
+    ) {
+      _arr.push(_s.value);
+      if (i && _arr.length === i) break;
+    }
+  } catch (err) {
+    _d = true;
+    _e = err;
+  } finally {
+    try {
+      if (!_n && _i['return'] != null) _i['return']();
+    } finally {
+      if (_d) throw _e;
+    }
+  }
+  return _arr;
+}
+
+function _arrayWithHoles(arr) {
+  if (Array.isArray(arr)) return arr;
 }
 
 function _toConsumableArray(arr) {
@@ -164,7 +258,7 @@ var emptyField = [
   {
     type: 'input',
     placeholder: '',
-    label: 'Question1',
+    label: '',
     field: (0, _lodash.camelCase)('Question1'),
     rules: [
       {
@@ -174,6 +268,13 @@ var emptyField = [
     ],
   },
 ];
+
+var checkLabels = function checkLabels(items) {
+  var notValid = items.filter(function(item) {
+    return item.label === '' || item.label === undefined || item.label === null;
+  });
+  return notValid.length === 0;
+};
 
 var SchemaList = _react['default'].forwardRef(function(_ref3, ref) {
   var value = _ref3.value,
@@ -236,8 +337,7 @@ var SchemaList = _react['default'].forwardRef(function(_ref3, ref) {
               var updatedList = [].concat(_toConsumableArray(value), [
                 {
                   type: 'input',
-                  placeholder: '',
-                  label: 'Question'.concat(value.length + 1),
+                  label: '',
                   field: (0, _lodash.camelCase)(
                     'Question '.concat(value.length + 1)
                   ),
@@ -261,19 +361,35 @@ var SchemaList = _react['default'].forwardRef(function(_ref3, ref) {
 
 var FormBuilder = function FormBuilder(_ref5) {
   var onSave = _ref5.onSave,
+    _ref5$noSave = _ref5.noSave,
+    noSave = _ref5$noSave === void 0 ? false : _ref5$noSave,
     onError = _ref5.onError,
     _ref5$formStructure = _ref5.formStructure,
     formStructure = _ref5$formStructure === void 0 ? {} : _ref5$formStructure,
     _ref5$form = _ref5.form,
     getFieldDecorator = _ref5$form.getFieldDecorator,
-    validateFields = _ref5$form.validateFields;
+    validateFields = _ref5$form.validateFields,
+    _ref5$formId = _ref5.formId,
+    formId = _ref5$formId === void 0 ? null : _ref5$formId;
+
+  var _useState = (0, _react.useState)([]),
+    _useState2 = _slicedToArray(_useState, 2),
+    errors = _useState2[0],
+    setErrors = _useState2[1];
 
   var handleSubmit = function handleSubmit(e) {
+    setErrors([]);
+    console.log(e);
     e.preventDefault();
     validateFields(function(err, formData) {
+      console.log(err);
+
       if (!err) {
         if (onSave) onSave(formData);
-      } else if (onError) onError(err);
+      } else if (onError) {
+        setErrors(err.schema.errors);
+        onError(err);
+      }
     });
   };
 
@@ -286,73 +402,125 @@ var FormBuilder = function FormBuilder(_ref5) {
       initialValue: formStructure.type,
     });
   return _react['default'].createElement(
-    _form['default'],
-    {
-      colon: false,
-      onSubmit: handleSubmit,
-      noValidate: true,
-    },
+    _react['default'].Fragment,
+    null,
+    errors.length > 0 &&
+      _react['default'].createElement(_alert['default'], {
+        type: 'error',
+        message: 'Error',
+        showIcon: true,
+        // eslint-disable-next-line react/jsx-wrap-multilines
+        description: _react['default'].createElement(
+          'ul',
+          null,
+          errors.map(function(error, index) {
+            return _react['default'].createElement(
+              'li',
+              {
+                key: index,
+              },
+              error.message
+            );
+          })
+        ),
+      }),
     _react['default'].createElement(
-      _form['default'].Item,
+      _form['default'],
       {
-        label: 'Name',
+        onKeyPress: function onKeyPress(e) {
+          if (e.key === 'Enter') {
+            e.preventDefault();
+            return false;
+          }
+
+          return true;
+        },
+        colon: false,
+        onSubmit: handleSubmit,
+        noValidate: true,
+        id: formId,
       },
-      getFieldDecorator('name', {
-        initialValue: formStructure.name || '',
-      })(
-        _react['default'].createElement(_input['default'], {
-          placeholder: 'Add form name',
-        })
-      )
-    ),
-    _react['default'].createElement(
-      _form['default'].Item,
-      {
-        label: 'Description',
-      },
-      getFieldDecorator('description', {
-        initialValue: formStructure.description || '',
-      })(
-        _react['default'].createElement(_input['default'].TextArea, {
-          placeholder: 'Add form description',
-          autosize: {
-            minRows: 2,
-            maxRows: 6,
-          },
-        })
-      )
-    ),
-    _react['default'].createElement(
-      _row['default'],
-      null,
       _react['default'].createElement(
         _form['default'].Item,
-        null,
-        getFieldDecorator('schema', {
-          initialValue: !(0, _lodash.isEmpty)(formStructure.schema)
-            ? formStructure.schema
-            : emptyField,
-        })(_react['default'].createElement(SchemaList, null))
-      )
-    ),
-    _react['default'].createElement(
-      'div',
-      {
-        style: {
-          margin: '30 0',
-        },
-      },
-      _react['default'].createElement(
-        _button['default'],
         {
-          htmlType: 'submit',
+          label: 'Name',
         },
-        'Save'
+        getFieldDecorator('name', {
+          initialValue: formStructure.name || '',
+        })(
+          _react['default'].createElement(_input['default'], {
+            placeholder: 'Add form name',
+          })
+        )
+      ),
+      _react['default'].createElement(
+        _form['default'].Item,
+        {
+          label: 'Description',
+        },
+        getFieldDecorator('description', {
+          initialValue: formStructure.description || '',
+        })(
+          _react['default'].createElement(_input['default'].TextArea, {
+            placeholder: 'Add form description',
+            autosize: {
+              minRows: 2,
+              maxRows: 6,
+            },
+          })
+        )
+      ),
+      _react['default'].createElement(
+        _row['default'],
+        null,
+        _react['default'].createElement(
+          _form['default'].Item,
+          {
+            validateStatus: null,
+            help: null,
+          },
+          getFieldDecorator('schema', {
+            initialValue: !(0, _lodash.isEmpty)(formStructure.schema)
+              ? formStructure.schema
+              : emptyField,
+            rules: [
+              {
+                validator: function validator(rule, value, callback) {
+                  if (!checkLabels(value)) {
+                    callback(
+                      'Please provide questions. All questions are required.'
+                    );
+                  }
+
+                  callback();
+                },
+              },
+            ],
+          })(_react['default'].createElement(SchemaList, null))
+        )
+      ),
+      _react['default'].createElement(
+        'div',
+        {
+          style: {
+            margin: '30 0',
+          },
+        },
+        !noSave &&
+          _react['default'].createElement(
+            _button['default'],
+            {
+              htmlType: 'submit',
+            },
+            'Save'
+          )
       )
     )
   );
 };
 
-var _default = _form['default'].create('form_builder')(FormBuilder);
+var _default = _form['default'].create({
+  name: 'form_builder',
+})(FormBuilder);
 
 exports['default'] = _default;

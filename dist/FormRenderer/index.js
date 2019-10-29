@@ -261,12 +261,14 @@ var FormItemRenderer = function FormItemRenderer(_ref) {
     field = formItem.field,
     type = formItem.type,
     help = formItem.help,
-    fieldProps = _objectWithoutProperties(formItem, [
+    allProps = _objectWithoutProperties(formItem, [
       'label',
       'field',
       'type',
       'help',
-    ]); // Select list
+    ]);
+
+  var fieldProps = (0, _lodash.omit)(allProps, 'placeholder'); // Select list
 
   if (type === 'select') {
     return _react['default'].createElement(
@@ -310,6 +312,7 @@ var FormItemRenderer = function FormItemRenderer(_ref) {
       decorator(
         field,
         _objectSpread({}, fieldProps, {
+          valuePropName: 'checked',
           initialValue: initialValue || false,
         })
       )(_react['default'].createElement(_checkbox['default'], null, label))

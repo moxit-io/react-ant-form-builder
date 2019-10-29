@@ -169,7 +169,7 @@ var SortableCard = (0, _reactSortableHoc.SortableElement)(function(_ref) {
     // Updated schema with changes.
     var allFields = items; // Update specific property.
 
-    if (field && change) {
+    if (field) {
       allFields[index] = _objectSpread(
         {},
         value,
@@ -177,7 +177,9 @@ var SortableCard = (0, _reactSortableHoc.SortableElement)(function(_ref) {
       );
     } else {
       // replace property
-      allFields[index] = change;
+      allFields[index] = _objectSpread({}, change, {
+        field: value.field,
+      });
     }
 
     if (onChange) onChange(allFields);
@@ -254,6 +256,7 @@ var SortableCard = (0, _reactSortableHoc.SortableElement)(function(_ref) {
             },
             value && value.type === 'textarea'
               ? _react['default'].createElement(_input['default'].TextArea, {
+                  placeholder: 'Add Question Here',
                   value: value.label || '',
                   autosize: {
                     minRows: 2,
@@ -265,6 +268,7 @@ var SortableCard = (0, _reactSortableHoc.SortableElement)(function(_ref) {
                 })
               : _react['default'].createElement(_input['default'], {
                   value: value.label || '',
+                  placeholder: 'Add Question Here',
                   onChange: function onChange(e) {
                     handleChange('label', e.target.value);
                   },
@@ -303,10 +307,9 @@ var SortableCard = (0, _reactSortableHoc.SortableElement)(function(_ref) {
                   onSelect: function onSelect(selected) {
                     // On change, reset.
                     var newField = {
-                      label: value.label || 'Question'.concat(items.length),
-                      field: (0, _lodash.camelCase)(
-                        'Question '.concat(items.length)
-                      ),
+                      label: value.label || '',
+                      placeholder: 'Add Question Here',
+                      field: value.field,
                       type: selected,
                       rules: [
                         {
