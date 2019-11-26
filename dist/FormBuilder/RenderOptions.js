@@ -185,7 +185,8 @@ var RenderOptions = function RenderOptions(_ref) {
         var newOptions = [].concat(_toConsumableArray(options), [
           {
             label: 'Option '.concat(options.length + 1),
-            value: 'Option '.concat(options.length + 1),
+            value: '',
+            placeholder: 'Option '.concat(options.length + 1),
           },
         ]);
         setClickedIndex(-1);
@@ -257,7 +258,7 @@ var RenderOptions = function RenderOptions(_ref) {
                   type: 'dashed',
                   block: true,
                   onClick: function onClick() {
-                    setInputValue(option.label);
+                    setInputValue(option.value);
                     setClickedIndex(index);
                   },
                 },
@@ -266,12 +267,14 @@ var RenderOptions = function RenderOptions(_ref) {
             index === clickedIndex &&
               _react['default'].createElement(_input['default'], {
                 value: inputValue,
+                placeholder: options[clickedIndex].placeholder,
                 style: {
                   width: 300,
                 },
                 onBlur: function onBlur() {
                   var newOptions = options;
-                  newOptions[index].label = inputValue;
+                  newOptions[index].label =
+                    inputValue || newOptions[index].placeholder;
                   newOptions[index].value = inputValue;
                   setClickedIndex(-1);
                   setInputValue('');
