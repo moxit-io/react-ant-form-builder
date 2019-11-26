@@ -18,7 +18,8 @@ const RenderOptions = ({ value: { type, options = [] }, onChange }) => {
           ...options,
           {
             label: `Option ${options.length + 1}`,
-            value: `Option ${options.length + 1}`,
+            value: ``,
+            placeholder: `Option ${options.length + 1}`,
           },
         ];
         setClickedIndex(-1);
@@ -59,7 +60,7 @@ const RenderOptions = ({ value: { type, options = [] }, onChange }) => {
                     type="dashed"
                     block
                     onClick={() => {
-                      setInputValue(option.label);
+                      setInputValue(option.value);
                       setClickedIndex(index);
                     }}
                   >
@@ -69,12 +70,14 @@ const RenderOptions = ({ value: { type, options = [] }, onChange }) => {
                 {index === clickedIndex && (
                   <Input
                     value={inputValue}
+                    placeholder={options[clickedIndex].placeholder}
                     style={{
                       width: 300,
                     }}
                     onBlur={() => {
                       const newOptions = options;
-                      newOptions[index].label = inputValue;
+                      newOptions[index].label =
+                        inputValue || newOptions[index].placeholder;
                       newOptions[index].value = inputValue;
                       setClickedIndex(-1);
                       setInputValue('');
