@@ -28,9 +28,18 @@ const SortableSchema = SortableContainer(({ items, header, onChange }) => {
             onChange={onChange}
             onDelete={deletedItem => {
               if (deletedItem) {
-                const updatedSchema = items.filter(
-                  i => i.field !== deletedItem.field
-                );
+                let found = false;
+                const updatedSchema = items.filter((i, itemIndex) => {
+                  if (i.field === deletedItem.field) {
+                    found = true;
+                    return false;
+                  }
+                  if (found) {
+                    // eslint-disable-next-line no-param-reassign
+                    i.field = camelCase(`Question ${itemIndex}`);
+                  }
+                  return true;
+                });
                 onChange(updatedSchema);
               }
             }}
@@ -61,9 +70,34 @@ const checkLabels = items => {
   return notValid.length === 0;
 };
 
+const checkOptions = items => {
+  for (let i = 0; i < items.length; i += 1) {
+    const currQuestion = items[i];
+    if (
+      currQuestion.type === 'radio' ||
+      currQuestion.type === 'checkbox' ||
+      currQuestion.type === 'select'
+    ) {
+      const currOptions = currQuestion.options;
+      if (currOptions.length === 0) {
+        return false;
+      }
+
+      for (let j = 0; j < currOptions.length; j += 1) {
+        if (currOptions[j].value === '') {
+          return false;
+        }
+      }
+    }
+  }
+  return true;
+};
+
 const SchemaList = React.forwardRef(({ value, onChange, header }, ref) => {
   // const bottomRef = useRef(null);
-  const handleChange = change => onChange(change);
+  const handleChange = change => {
+    onChange(change);
+  };
   return (
     <Row>
       <Col
@@ -73,12 +107,15 @@ const SchemaList = React.forwardRef(({ value, onChange, header }, ref) => {
         <Row style={{ background: '#ECECEC' }}>
           <SortableSchema
             items={value}
-            onChange={onChange}
+            onChange={handleChange}
             header={header}
             onSortEnd={({ oldIndex, newIndex }) => {
               // Re-assigned avoid mutation.
               let updatedSchema = value;
               updatedSchema = arrayMove(updatedSchema, oldIndex, newIndex);
+              updatedSchema.forEach((e, index) => {
+                e.field = camelCase(`Question ${index + 1}`);
+              });
               handleChange(updatedSchema);
             }}
           />
@@ -150,10 +187,8 @@ const FormBuilder = ({
 
   const handleSubmit = e => {
     setErrors([]);
-    console.log(e);
     e.preventDefault();
     validateFields((err, formData) => {
-      console.log(err);
       if (!err) {
         if (onSave) onSave(formData);
       } else if (onError) {
@@ -225,6 +260,11 @@ const FormBuilder = ({
                     if (!checkLabels(value)) {
                       callback(
                         'Please provide questions. All questions are required.'
+                      );
+                    }
+                    if (!checkOptions(value)) {
+                      callback(
+                        'Please provide options for questions. All options require names.'
                       );
                     }
                     callback();

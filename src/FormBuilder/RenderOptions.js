@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Radio, Button, Checkbox, Input, Col, Row } from 'antd';
-import { filter } from 'lodash';
+import { filter, uniqBy } from 'lodash';
 
 const RenderOptions = ({ value: { type, options = [] }, onChange }) => {
   const [clickedIndex, setClickedIndex] = useState(-1);
@@ -17,9 +17,9 @@ const RenderOptions = ({ value: { type, options = [] }, onChange }) => {
         const newOptions = [
           ...options,
           {
-            label: `Option ${options.length + 1}`,
+            field: `Option ${options.length + 1}`,
             value: ``,
-            placeholder: `Option ${options.length + 1}`,
+            label: ``,
           },
         ];
         setClickedIndex(-1);
@@ -30,6 +30,13 @@ const RenderOptions = ({ value: { type, options = [] }, onChange }) => {
     </Button>
   );
 
+  const onOptionsChange = newOptions => {
+    newOptions.forEach((e, index) => {
+      e.field = `Option ${index + 1}`;
+    });
+    onChange(newOptions);
+  };
+
   const removeButton = removed => (
     <Button
       type="link"
@@ -37,8 +44,10 @@ const RenderOptions = ({ value: { type, options = [] }, onChange }) => {
       size="small"
       style={{ marginLeft: 10 }}
       onClick={() => {
-        const newOptions = filter(options, o => o.label !== removed.value);
-        onChange(newOptions);
+        const newOptions = filter(options, o => {
+          return o.field !== removed.field;
+        });
+        onOptionsChange(newOptions);
       }}
     />
   );
@@ -47,7 +56,7 @@ const RenderOptions = ({ value: { type, options = [] }, onChange }) => {
     <div>
       {options.map((option, index) => {
         return (
-          <div key={index}>
+          <div style={{ marginTop: '5px' }} key={index}>
             <Row type="flex" justify="start" align="middle" gutter={16}>
               <Col span={1}>
                 {type === 'radio' && <Radio disabled />}
@@ -59,29 +68,43 @@ const RenderOptions = ({ value: { type, options = [] }, onChange }) => {
                   <Button
                     type="dashed"
                     block
+                    style={{ overflow: 'hidden', textOverflow: 'ellipsis' }}
                     onClick={() => {
                       setInputValue(option.value);
                       setClickedIndex(index);
                     }}
                   >
-                    {option.label}
+                    {option.value ? (
+                      option.value
+                    ) : (
+                      <span style={{ color: '#ccc' }}>
+                        {`Click to edit ${option.field}`}
+                      </span>
+                    )}
                   </Button>
                 )}
                 {index === clickedIndex && (
                   <Input
                     value={inputValue}
-                    placeholder={options[clickedIndex].placeholder}
+                    autoFocus
+                    placeholder={options[clickedIndex].field}
                     style={{
                       width: 300,
                     }}
                     onBlur={() => {
-                      const newOptions = options;
-                      newOptions[index].label =
-                        inputValue || newOptions[index].placeholder;
+                      let newOptions = options;
                       newOptions[index].value = inputValue;
+                      newOptions[index].label =
+                        inputValue || newOptions[index].field;
                       setClickedIndex(-1);
                       setInputValue('');
-                      onChange(newOptions);
+                      newOptions = uniqBy(newOptions, checkOption => {
+                        if (checkOption.value === '') {
+                          return checkOption.field;
+                        }
+                        return checkOption.value;
+                      });
+                      onOptionsChange(newOptions);
                     }}
                     onChange={e => {
                       setInputValue(e.target.value);
