@@ -239,8 +239,19 @@ var SortableSchema = (0, _reactSortableHoc.SortableContainer)(function(_ref2) {
         onChange: onChange,
         onDelete: function onDelete(deletedItem) {
           if (deletedItem) {
-            var updatedSchema = items.filter(function(i) {
-              return i.field !== deletedItem.field;
+            var found = false;
+            var updatedSchema = items.filter(function(i, itemIndex) {
+              if (i.field === deletedItem.field) {
+                found = true;
+                return false;
+              }
+
+              if (found) {
+                // eslint-disable-next-line no-param-reassign
+                i.field = (0, _lodash.camelCase)('Question '.concat(itemIndex));
+              }
+
+              return true;
             });
             onChange(updatedSchema);
           }
@@ -276,6 +287,32 @@ var checkLabels = function checkLabels(items) {
   return notValid.length === 0;
 };
 
+var checkOptions = function checkOptions(items) {
+  for (var i = 0; i < items.length; i += 1) {
+    var currQuestion = items[i];
+
+    if (
+      currQuestion.type === 'radio' ||
+      currQuestion.type === 'checkbox' ||
+      currQuestion.type === 'select'
+    ) {
+      var currOptions = currQuestion.options;
+
+      if (currOptions.length === 0) {
+        return false;
+      }
+
+      for (var j = 0; j < currOptions.length; j += 1) {
+        if (currOptions[j].value === '') {
+          return false;
+        }
+      }
+    }
+  }
+
+  return true;
+};
+
 var SchemaList = _react['default'].forwardRef(function(_ref3, ref) {
   var value = _ref3.value,
     onChange = _ref3.onChange,
@@ -283,7 +320,7 @@ var SchemaList = _react['default'].forwardRef(function(_ref3, ref) {
 
   // const bottomRef = useRef(null);
   var handleChange = function handleChange(change) {
-    return onChange(change);
+    onChange(change);
   };
 
   return _react['default'].createElement(
@@ -304,7 +341,7 @@ var SchemaList = _react['default'].forwardRef(function(_ref3, ref) {
         },
         _react['default'].createElement(SortableSchema, {
           items: value,
-          onChange: onChange,
+          onChange: handleChange,
           header: header,
           onSortEnd: function onSortEnd(_ref4) {
             var oldIndex = _ref4.oldIndex,
@@ -316,6 +353,9 @@ var SchemaList = _react['default'].forwardRef(function(_ref3, ref) {
               oldIndex,
               newIndex
             );
+            updatedSchema.forEach(function(e, index) {
+              e.field = (0, _lodash.camelCase)('Question '.concat(index + 1));
+            });
             handleChange(updatedSchema);
           },
         })
@@ -379,11 +419,8 @@ var FormBuilder = function FormBuilder(_ref5) {
 
   var handleSubmit = function handleSubmit(e) {
     setErrors([]);
-    console.log(e);
     e.preventDefault();
     validateFields(function(err, formData) {
-      console.log(err);
-
       if (!err) {
         if (onSave) onSave(formData);
       } else if (onError) {
@@ -489,6 +526,12 @@ var FormBuilder = function FormBuilder(_ref5) {
                   if (!checkLabels(value)) {
                     callback(
                       'Please provide questions. All questions are required.'
+                    );
+                  }
+
+                  if (!checkOptions(value)) {
+                    callback(
+                      'Please provide options for questions. All options require names.'
                     );
                   }
 

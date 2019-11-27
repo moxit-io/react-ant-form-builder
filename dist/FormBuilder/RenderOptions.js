@@ -184,9 +184,9 @@ var RenderOptions = function RenderOptions(_ref) {
       onClick: function onClick() {
         var newOptions = [].concat(_toConsumableArray(options), [
           {
-            label: 'Option '.concat(options.length + 1),
+            field: 'Option '.concat(options.length + 1),
             value: '',
-            placeholder: 'Option '.concat(options.length + 1),
+            label: '',
           },
         ]);
         setClickedIndex(-1);
@@ -195,6 +195,13 @@ var RenderOptions = function RenderOptions(_ref) {
     },
     'ADD NEW'
   );
+
+  var onOptionsChange = function onOptionsChange(newOptions) {
+    newOptions.forEach(function(e, index) {
+      e.field = 'Option '.concat(index + 1);
+    });
+    onChange(newOptions);
+  };
 
   var removeButton = function removeButton(removed) {
     return _react['default'].createElement(_button['default'], {
@@ -206,9 +213,9 @@ var RenderOptions = function RenderOptions(_ref) {
       },
       onClick: function onClick() {
         var newOptions = (0, _lodash.filter)(options, function(o) {
-          return o.label !== removed.value;
+          return o.field !== removed.field;
         });
-        onChange(newOptions);
+        onOptionsChange(newOptions);
       },
     });
   };
@@ -220,6 +227,9 @@ var RenderOptions = function RenderOptions(_ref) {
       return _react['default'].createElement(
         'div',
         {
+          style: {
+            marginTop: '5px',
+          },
           key: index,
         },
         _react['default'].createElement(
@@ -257,28 +267,52 @@ var RenderOptions = function RenderOptions(_ref) {
                 {
                   type: 'dashed',
                   block: true,
+                  style: {
+                    overflow: 'hidden',
+                    textOverflow: 'ellipsis',
+                  },
                   onClick: function onClick() {
                     setInputValue(option.value);
                     setClickedIndex(index);
                   },
                 },
-                option.label
+                option.value
+                  ? option.value
+                  : _react['default'].createElement(
+                      'span',
+                      {
+                        style: {
+                          color: '#ccc',
+                        },
+                      },
+                      'Click to edit '.concat(option.field)
+                    )
               ),
             index === clickedIndex &&
               _react['default'].createElement(_input['default'], {
                 value: inputValue,
-                placeholder: options[clickedIndex].placeholder,
+                autoFocus: true,
+                placeholder: options[clickedIndex].field,
                 style: {
                   width: 300,
                 },
                 onBlur: function onBlur() {
                   var newOptions = options;
-                  newOptions[index].label =
-                    inputValue || newOptions[index].placeholder;
                   newOptions[index].value = inputValue;
+                  newOptions[index].label =
+                    inputValue || newOptions[index].field;
                   setClickedIndex(-1);
                   setInputValue('');
-                  onChange(newOptions);
+                  newOptions = (0, _lodash.uniqBy)(newOptions, function(
+                    checkOption
+                  ) {
+                    if (checkOption.value === '') {
+                      return checkOption.field;
+                    }
+
+                    return checkOption.value;
+                  });
+                  onOptionsChange(newOptions);
                 },
                 onChange: function onChange(e) {
                   setInputValue(e.target.value);
