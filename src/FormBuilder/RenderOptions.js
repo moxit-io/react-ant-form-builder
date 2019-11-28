@@ -63,7 +63,7 @@ const RenderOptions = ({ value: { type, options = [] }, onChange }) => {
                 {type === 'checkbox' && <Checkbox disabled />}
                 {type === 'select' && <span>{index + 1}</span>}
               </Col>
-              <Col span={7}>
+              <Col span={10}>
                 {index !== clickedIndex && (
                   <Button
                     type="dashed"
@@ -112,7 +112,7 @@ const RenderOptions = ({ value: { type, options = [] }, onChange }) => {
                   />
                 )}
               </Col>
-              <Col span={4}>
+              <Col span={1}>
                 {index !== clickedIndex && removeButton(option)}
               </Col>
             </Row>
