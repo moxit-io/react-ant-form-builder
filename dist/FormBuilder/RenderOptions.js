@@ -259,7 +259,7 @@ var RenderOptions = function RenderOptions(_ref) {
           _react['default'].createElement(
             _col['default'],
             {
-              span: 7,
+              span: 10,
             },
             index !== clickedIndex &&
               _react['default'].createElement(
@@ -322,7 +322,7 @@ var RenderOptions = function RenderOptions(_ref) {
           _react['default'].createElement(
             _col['default'],
             {
-              span: 4,
+              span: 1,
             },
             index !== clickedIndex && removeButton(option)
           )
