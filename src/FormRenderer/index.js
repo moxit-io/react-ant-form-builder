@@ -74,7 +74,7 @@ export const FormItemRenderer = ({ formItem, decorator, initialValue }) => {
 
 const FormRenderer = ({
   colon = false,
-  form: { getFieldDecorator, validateFields },
+  form: { getFieldDecorator, validateFields, resetFields },
   data = {},
   onSave,
   onError,
@@ -90,7 +90,10 @@ const FormRenderer = ({
     e.preventDefault();
     validateFields((err, formData) => {
       if (!err) {
-        if (onSave) onSave({ formData, draft });
+        if (onSave) {
+          onSave({ formData, draft });
+        }
+        resetFields();
       } else if (onError) onError(err);
     });
   };

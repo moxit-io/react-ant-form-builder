@@ -345,6 +345,7 @@ var FormRenderer = function FormRenderer(_ref2) {
     _ref2$form = _ref2.form,
     getFieldDecorator = _ref2$form.getFieldDecorator,
     validateFields = _ref2$form.validateFields,
+    resetFields = _ref2$form.resetFields,
     _ref2$data = _ref2.data,
     data = _ref2$data === void 0 ? {} : _ref2$data,
     onSave = _ref2.onSave,
@@ -372,11 +373,14 @@ var FormRenderer = function FormRenderer(_ref2) {
     e.preventDefault();
     validateFields(function(err, formData) {
       if (!err) {
-        if (onSave)
+        if (onSave) {
           onSave({
             formData: formData,
             draft: draft,
           });
+        }
+
+        resetFields();
       } else if (onError) onError(err);
     });
   };
