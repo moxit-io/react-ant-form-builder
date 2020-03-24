@@ -37,9 +37,19 @@ require('antd/es/input/style');
 
 var _input = _interopRequireDefault(require('antd/es/input'));
 
+require('antd/es/time-picker/style');
+
+var _timePicker = _interopRequireDefault(require('antd/es/time-picker'));
+
+require('antd/es/date-picker/style');
+
+var _datePicker = _interopRequireDefault(require('antd/es/date-picker'));
+
 var _react = _interopRequireWildcard(require('react'));
 
 var _lodash = require('lodash');
+
+var _momentTimezone = _interopRequireDefault(require('moment-timezone'));
 
 function _getRequireWildcardCache() {
   if (typeof WeakMap !== 'function') return null;
@@ -84,23 +94,6 @@ function _interopRequireWildcard(obj) {
 
 function _interopRequireDefault(obj) {
   return obj && obj.__esModule ? obj : { default: obj };
-}
-
-function _extends() {
-  _extends =
-    Object.assign ||
-    function(target) {
-      for (var i = 1; i < arguments.length; i++) {
-        var source = arguments[i];
-        for (var key in source) {
-          if (Object.prototype.hasOwnProperty.call(source, key)) {
-            target[key] = source[key];
-          }
-        }
-      }
-      return target;
-    };
-  return _extends.apply(this, arguments);
 }
 
 function _slicedToArray(arr, i) {
@@ -201,6 +194,23 @@ function _defineProperty(obj, key, value) {
   return obj;
 }
 
+function _extends() {
+  _extends =
+    Object.assign ||
+    function(target) {
+      for (var i = 1; i < arguments.length; i++) {
+        var source = arguments[i];
+        for (var key in source) {
+          if (Object.prototype.hasOwnProperty.call(source, key)) {
+            target[key] = source[key];
+          }
+        }
+      }
+      return target;
+    };
+  return _extends.apply(this, arguments);
+}
+
 function _objectWithoutProperties(source, excluded) {
   if (source == null) return {};
   var target = _objectWithoutPropertiesLoose(source, excluded);
@@ -230,6 +240,56 @@ function _objectWithoutPropertiesLoose(source, excluded) {
   return target;
 }
 
+var CustomDatePicker = _react['default'].forwardRef(function(props, ref) {
+  var handleChange = function handleChange(date) {
+    if (props.onChange) props.onChange(date.format());
+  };
+
+  var value = props.value,
+    format = props.format,
+    restProps = _objectWithoutProperties(props, ['value', 'format']);
+
+  return _react['default'].createElement(
+    _datePicker['default'],
+    _extends(
+      {
+        ref: ref,
+      },
+      restProps,
+      {
+        value: value ? (0, _momentTimezone['default'])(value) : null,
+        onChange: handleChange,
+        format: format || 'MM/DD/YYYY',
+      }
+    )
+  );
+});
+
+var CustomTimePicker = _react['default'].forwardRef(function(props, ref) {
+  var handleChange = function handleChange(date, dateString) {
+    if (props.onChange) props.onChange(dateString);
+  };
+
+  var value = props.value,
+    format = props.format,
+    restProps = _objectWithoutProperties(props, ['value', 'format']);
+
+  return _react['default'].createElement(
+    _timePicker['default'],
+    _extends(
+      {
+        ref: ref,
+      },
+      restProps,
+      {
+        value: value ? (0, _momentTimezone['default'])(value, 'h:mm A') : null,
+        onChange: handleChange,
+        format: format || 'h:mm A',
+      }
+    )
+  );
+});
+
 var selectFormElement = function selectFormElement(type) {
   switch (type) {
     case 'input':
@@ -246,6 +306,12 @@ var selectFormElement = function selectFormElement(type) {
 
     case 'radio':
       return _radio['default'].Group;
+
+    case 'date':
+      return CustomDatePicker;
+
+    case 'time':
+      return CustomTimePicker;
 
     default:
       return null;

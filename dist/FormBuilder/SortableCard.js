@@ -443,6 +443,50 @@ var SortableCard = (0, _reactSortableHoc.SortableElement)(function(_ref) {
                 _react['default'].createElement(
                   _select['default'].Option,
                   {
+                    key: 'date',
+                    value: 'date',
+                  },
+                  _react['default'].createElement(
+                    _reactFontawesome.FontAwesomeIcon,
+                    {
+                      icon: _freeSolidSvgIcons.faCalendarAlt,
+                    }
+                  ),
+                  _react['default'].createElement(
+                    'span',
+                    {
+                      style: {
+                        marginLeft: 10,
+                      },
+                    },
+                    'Date'
+                  )
+                ),
+                _react['default'].createElement(
+                  _select['default'].Option,
+                  {
+                    key: 'time',
+                    value: 'time',
+                  },
+                  _react['default'].createElement(
+                    _reactFontawesome.FontAwesomeIcon,
+                    {
+                      icon: _freeSolidSvgIcons.faClock,
+                    }
+                  ),
+                  _react['default'].createElement(
+                    'span',
+                    {
+                      style: {
+                        marginLeft: 10,
+                      },
+                    },
+                    'Time'
+                  )
+                ),
+                _react['default'].createElement(
+                  _select['default'].Option,
+                  {
                     key: 'confirm',
                     value: 'confirm',
                   },
