@@ -10,6 +10,8 @@ import {
   faChevronCircleDown,
   faDotCircle,
   faCheck,
+  faCalendarAlt,
+  faClock,
 } from '@fortawesome/free-solid-svg-icons';
 import RenderOptions from './RenderOptions';
 
@@ -155,6 +157,14 @@ const SortableCard = SortableElement(
                     <Select.Option key="select" value="select">
                       <FontAwesomeIcon icon={faChevronCircleDown} />
                       <span style={{ marginLeft: 10 }}>Dropdown</span>
+                    </Select.Option>
+                    <Select.Option key="date" value="date">
+                      <FontAwesomeIcon icon={faCalendarAlt} />
+                      <span style={{ marginLeft: 10 }}>Date</span>
+                    </Select.Option>
+                    <Select.Option key="time" value="time">
+                      <FontAwesomeIcon icon={faClock} />
+                      <span style={{ marginLeft: 10 }}>Time</span>
                     </Select.Option>
                     <Select.Option key="confirm" value="confirm">
                       <FontAwesomeIcon icon={faCheck} />

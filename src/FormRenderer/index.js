@@ -1,6 +1,51 @@
 import React, { useState } from 'react';
-import { Form, Input, Checkbox, Button, Radio, Select, Row, Col } from 'antd';
+import {
+  Form,
+  Input,
+  Checkbox,
+  Button,
+  Radio,
+  Select,
+  Row,
+  Col,
+  DatePicker,
+  TimePicker,
+} from 'antd';
 import { isEmpty, omit } from 'lodash';
+import moment from 'moment-timezone';
+
+const CustomDatePicker = React.forwardRef((props, ref) => {
+  const handleChange = date => {
+    if (props.onChange) props.onChange(date.format());
+  };
+  const { value, format, ...restProps } = props;
+  return (
+    <DatePicker
+      ref={ref}
+      {...restProps}
+      value={value ? moment(value) : null}
+      onChange={handleChange}
+      format={format || 'MM/DD/YYYY'}
+    />
+  );
+});
+
+const CustomTimePicker = React.forwardRef((props, ref) => {
+  const handleChange = (date, dateString) => {
+    if (props.onChange) props.onChange(dateString);
+  };
+  const { value, format, ...restProps } = props;
+
+  return (
+    <TimePicker
+      ref={ref}
+      {...restProps}
+      value={value ? moment(value, 'h:mm A') : null}
+      onChange={handleChange}
+      format={format || 'h:mm A'}
+    />
+  );
+});
 
 const selectFormElement = type => {
   switch (type) {
@@ -14,6 +59,10 @@ const selectFormElement = type => {
       return Checkbox.Group;
     case 'radio':
       return Radio.Group;
+    case 'date':
+      return CustomDatePicker;
+    case 'time':
+      return CustomTimePicker;
     default:
       return null;
   }
@@ -54,6 +103,7 @@ export const FormItemRenderer = ({ formItem, decorator, initialValue }) => {
       </Form.Item>
     );
   }
+
   // Others
   const FormElement = selectFormElement(type);
   if (!FormElement) return null;
