@@ -1,11 +1,8 @@
 import React, { useState } from 'react';
 import ReactDOM from 'react-dom';
+import { FormRenderer, FormBuilder } from '../../src';
 
 import './example.css';
-
-// Components
-import FormBuilder from '../../src/FormBuilder';
-import FormRenderer from '../../src/FormRenderer';
 
 const App = () => {
   const [formSchema, setFormSchema] = useState({});
