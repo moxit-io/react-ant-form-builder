@@ -21,7 +21,7 @@ const App = () => {
         />
       </div>
       <div className="column">
-        <h1>Renderer</h1>
+        <h1>Rendered form</h1>
         <FormRenderer
           allowDraft
           formStructure={formSchema}
@@ -31,6 +31,16 @@ const App = () => {
           }}
           onError={error => console.log(error)}
         />
+
+        <div>
+          <h1>Submitted form data</h1>
+          <pre>{JSON.stringify(data, null, 2)}</pre>
+        </div>
+
+        <div>
+          <h1>Form schema</h1>
+          <pre>{JSON.stringify(formSchema, null, 2)}</pre>
+        </div>
       </div>
     </div>
   );
